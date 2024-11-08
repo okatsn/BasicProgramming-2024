@@ -40,7 +40,6 @@
 #place(
   top + left,
   float: true,
-  scope: "parent",
   clearance: 2em,
 )[
   #align(left)[
