@@ -18,10 +18,10 @@
 
 | 日期          | 範圍                                                                               | 附註      |
 |-------------|----------------------------------------------------------------------------------|---------|
-| 11/20 15:00 | [Python for beginners](https://simplelearn.tw/python-for-beginners/) (1) - (4)   | (4 抽 2) |
-| 12/04 15:00 | [Python for beginners](https://simplelearn.tw/python-for-beginners/) (5) - (8)   | (4 抽 2) |
-| 12/25 15:00 | [Python for beginners](https://simplelearn.tw/python-for-beginners/) (9) - (12)  | (4 抽 2) |
-| 01/08 15:00 | [Python for beginners](https://simplelearn.tw/python-for-beginners/) (13) - (16) | (4 抽 2) |
+| 11/25 15:00 | [Python for beginners](https://simplelearn.tw/python-for-beginners/) (1) - (4)   | (4 抽 2) |
+| 12/09 15:00 | [Python for beginners](https://simplelearn.tw/python-for-beginners/) (5) - (8)   | (4 抽 2) |
+| 12/23 15:00 | [Python for beginners](https://simplelearn.tw/python-for-beginners/) (9) - (12)  | (4 抽 2) |
+| 01/06 15:00 | [Python for beginners](https://simplelearn.tw/python-for-beginners/) (13) - (16) | (4 抽 2) |
 
 
 每次測驗為50分鐘，包含以下流程：
