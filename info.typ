@@ -1,3 +1,14 @@
+#import "@preview/gentle-clues:1.0.0": *
+
+#let KEY(term) = highlight(
+  fill: rgb("f0e2a4"),
+  top-edge: "x-height",
+  extent: 1pt,
+  text(fill: color.cmyk(28%, 38%, 50%, 28%), weight: "black")[#term],
+)
+#let KEY2(term) = highlight(fill: rgb("ff99ff"), top-edge: "x-height", extent: 1pt, text(weight: "black")[#term])
+#let FIRE(term) = text(fill: rgb("990000"), weight: "bold", term)
+
 #set text( // Set main text: https://typst.app/docs/reference/text/text/
   font: "New Computer Modern",
   size: 10pt
