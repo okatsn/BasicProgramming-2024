@@ -13,7 +13,7 @@ makedocs(;
     modules=[BasicProgramming2024],
     authors="okatsn <okatsn@gmail.com> and contributors",
     repo="https://github.com/okatsn/BasicProgramming2024.jl/blob/{commit}{path}#{line}",
-    sitename="BasicProgramming2024.jl",
+    sitename="基礎程式設計-NCUES-113-1",
     format=Documenter.HTML(;
         prettyurls=get(ENV, "CI", "false") == "true",
         canonical="https://okatsn.github.io/BasicProgramming2024.jl",
@@ -22,10 +22,8 @@ makedocs(;
     ),
     pages=[
         "Home" => "index.md",
-    ],
-    # plugins=[
-    #     CitationBibliography(joinpath(@__DIR__, "src", "refs.bib")),
-    # ],
+        "課程須知" => "info.md",
+    ]
 )
 
 deploydocs(;
