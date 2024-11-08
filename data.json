@@ -1,0 +1,6 @@
+{
+    "devcontainer_name": "BasicProgramming2024",
+    "service": "devbp24",
+    "image": "jubp24",
+    "docker_compose_name": "basic-programming-2024"
+}
