@@ -39,7 +39,6 @@ contact = Dict(student_information.StudentID .=> student_information.gmail)
 
 # # Send Email After the scores are all registered.
 
-# row = eachrow(score_quiz)[1]
 url = "smtps://smtp.gmail.com:465"
 from = "<$sender>"
 

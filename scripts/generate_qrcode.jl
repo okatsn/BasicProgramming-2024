@@ -16,21 +16,27 @@ quiz_link(my_name, stud_ID, test_name, quiznum_A, quiznum_B) = "$(form_quiz)?usp
 # # Generate QRCode
 
 all_tests = [
-    "11/18 Python for beginners 1-4"
-    "12/02 Python for beginners 5-8"
-    "12/23 Python for beginners 9-12"
-    "12/30 Python for beginners 13-16"
+    "Python for beginners 1-4", # 11/18
+    "Python for beginners 5-8", # 12/02
+    "Python for beginners 9-12", # 12/23
+    "Python for beginners 13-16", # 12/30
 ]
-
-this_test = "11/18_上機測試_(範圍1-4)" # SETME
-
+# this_test = all_tests[1]
 for this_test in all_tests
+    this_test = replace(this_test, " " => "_")
 
     two_numbers = parse.(Int, split(match(r"\d+-\d+", this_test).match, "-"))
     picked_two = sample(range(two_numbers...), 2, replace=false) |> sort
 
-    links = [quiz_link(row.Name, row.StudentID, replace(this_test, " " => "_"), picked_two[1], picked_two[2]) for row in eachrow(student_information)]
+    # row = eachrow(student_information)[1]
+    for row in eachrow(student_information)
+        link = quiz_link(row.Name, row.StudentID, this_test, picked_two[1], picked_two[2])
 
-    println.(links)
+        fdir = "img/QRCode/$this_test"
+        mkpath(fdir)
 
+        fpath = "$fdir/QR_$(row.StudentID)"
+
+        exportqrcode(link, fpath)
+    end
 end
