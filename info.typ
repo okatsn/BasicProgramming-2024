@@ -6,12 +6,12 @@
 //   extent: 1pt,
 //   text(fill: color.cmyk(28%, 38%, 50%, 28%), weight: "black")[#term],
 // )
-// #let KEY2(term) = highlight(fill: rgb("ff99ff"), top-edge: "x-height", extent: 1pt, text(weight: "black")[#term])
+#let KEY2(term) = highlight(fill: rgb("ff99ff"), top-edge: "x-height", extent: 1pt, text(weight: "black")[#term])
 
 // #let KEY2(term) = text(weight: "bold")[#term]
-#let KEY2(term) = text()[#term]
-#let KEY1(term) = text()[#term]
-#let FIRE(term) = text(fill: rgb("990000"), weight: "bold", term)
+// #let KEY2(term) = text()[#term]
+// #let KEY1(term) = text()[#term]
+#let KEY1(term) = text(fill: rgb("990000"), weight: "bold", term)
 
 #set text( // Set main text: https://typst.app/docs/reference/text/text/
   font: "New Computer Modern",
@@ -90,7 +90,7 @@
 ]
 
 #warning(title: "警告")[
-  - #KEY2[每個測驗只能送出(SUBMIT)一次。]
+  - 每個測驗#KEY2[只能送出(SUBMIT)一次。]
   - 請務必將#KEY2[回條交給助教後，才能關閉測驗頁面]。
   - 作答完畢繳交回條後，請離開教室。
   - 若提早作答完畢#KEY2[先行離開教室者，預設 15:30 回到座位上]。
@@ -114,7 +114,7 @@
 
 - 若發現作弊屬實，則當天之測驗分數將全部計為零分，並送學務處處理。
 - 若發生#KEY1[任何違規事項將註記次數]，而且助教有權要求您當日課後至助教研究室重考。
-- 違反 @regulation_during_test 的事項，以及不遵守 @workflow 流程的行為，皆視為違規。
+- #KEY1[違反 @regulation_during_test 的事項，以及不遵守 @workflow 流程的行為，皆視為違規。]
 - 設 $n$ 為學期總違規次數，小考總成績(即平均後的結果)將扣 $n times 2^n$ 分。
 
 
