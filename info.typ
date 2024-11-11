@@ -34,9 +34,6 @@
 
 #set heading(numbering: "1.a.") // Numbering heading: https://typst.app/docs/reference/model/heading/
 
-// https://typst.app/docs/tutorial/advanced-styling/
-#show: rest => columns(2, rest)
-
 #place(
   top + left,
   float: true,
@@ -52,6 +49,10 @@
     聯絡助教：詳見 @contact_ta
   ]
 ]
+
+
+// https://typst.app/docs/tutorial/advanced-styling/
+#show: rest => columns(2, rest)
 
 
 = 測驗與計分方式 <test_how>
