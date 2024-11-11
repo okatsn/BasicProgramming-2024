@@ -15,7 +15,6 @@ quiz_link(my_name, stud_ID, test_name, quiznum_A, quiznum_B) = "$(form_quiz)?usp
 
 # # Generate QRCode
 
-qrcode_table = DataFrame()
 
 all_tests = [
     "Python for beginners 1-4", # 11/18
@@ -26,6 +25,7 @@ all_tests = [
 # this_test = all_tests[1]
 for this_test0 in all_tests
     this_test = replace(this_test0, " " => "_")
+    qrcode_table = DataFrame()
 
     two_numbers = parse.(Int, split(match(r"\d+-\d+", this_test).match, "-"))
     picked_two = sample(range(two_numbers...), 2, replace=false) |> sort
@@ -51,6 +51,6 @@ for this_test0 in all_tests
         )
         append!(qrcode_table, dfi)
     end
-    CSV.write("qrcode_$this_table.csv")
+    CSV.write("qrcode_$this_test.csv", qrcode_table)
 
 end
