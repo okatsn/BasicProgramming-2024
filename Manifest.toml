@@ -2,7 +2,7 @@
 
 julia_version = "1.10.5"
 manifest_format = "2.0"
-project_hash = "55055e4e29dfa6beb77df54ca1b0e0b88c2da02d"
+project_hash = "f99e05c78b64d5494a60fd9debb0790f02efc613"
 
 [[deps.AbstractFFTs]]
 deps = ["LinearAlgebra"]
@@ -692,6 +692,12 @@ deps = ["PrecompileTools"]
 git-tree-sha1 = "98ca7c29edd6fc79cd74c61accb7010a4e7aee33"
 uuid = "fdea26ae-647d-5447-a871-4b548cad5224"
 version = "3.6.0"
+
+[[deps.SMTPClient]]
+deps = ["Base64", "Dates", "Distributed", "LibCURL", "Markdown", "Sockets"]
+git-tree-sha1 = "fc2e0dbf5df044c8790fb2d89f5c8684922b93b3"
+uuid = "c35d69d1-b747-5018-a192-25bc5e63c83d"
+version = "0.6.4"
 
 [[deps.SentinelArrays]]
 deps = ["Dates", "Random"]

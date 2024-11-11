@@ -10,6 +10,7 @@ DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
 JSON = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
 OkReadGSheet = "760a1398-8f00-4da5-9475-268514cb6295"
 QRCoders = "f42e9828-16f3-11ed-2883-9126170b272d"
+SMTPClient = "c35d69d1-b747-5018-a192-25bc5e63c83d"
 
 [compat]
 julia = "1.9"
