@@ -69,7 +69,7 @@
   [日期], [範圍 (測驗頁面編號)], [附註],
   [11/18], [Python for beginners (1) - (4)], [(4 抽 2)],
   [12/02], [Python for beginners (5) - (8)], [(4 抽 2)],
-  [12/16], [Python for beginners (9) - (12)], [(4 抽 2)],
+  [12/23], [Python for beginners (9) - (12)], [(4 抽 2)],
   [12/30], [Python for beginners (13) - (16)], [(4 抽 2)],
 )
 
