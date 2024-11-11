@@ -3,3 +3,4 @@
 *.jl.mem
 /docs/build/
 /local
+/student_information.csv
