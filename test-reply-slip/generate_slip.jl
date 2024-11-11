@@ -1,4 +1,4 @@
-using JSON, OkReadGSheet, DataFrames, CSV, QRCoders, Chain, SMTPClient, HypertextLiteral
+using JSON, OkReadGSheet, DataFrames, CSV, Chain, SMTPClient, HypertextLiteral
 using Dates
 using OkReadGSheet
 
@@ -28,7 +28,6 @@ end
 
 
 
-form_quiz = secrets["form_quiz"] # please load from secrets.json
 sender_key = secrets["sender_key"]
 sender = secrets["sender"]
 
@@ -36,14 +35,7 @@ student_information = CSV.read("student_information.csv", DataFrame)
 contact = Dict(student_information.StudentID .=> student_information.gmail)
 
 
-quiz_link(score_A, score_B, violation_num, note, my_name, stud_ID, test_name) = "$(form_quiz)?usp=pp_url&entry.482342201=$(score_A)&entry.1809338332=$(score_B)&entry.2125071475=$(violation_num)&entry.1825598537=$(note)&entry.1529579107=$(my_name)&entry.838829525=$(stud_ID)&entry.658137221=$(test_name)"
-
-quiz_link(my_name, stud_ID, test_name) = "$(form_quiz)?usp=pp_url&entry.1529579107=$(my_name)&entry.838829525=$(stud_ID)&entry.658137221=$(test_name)"
-
-
-this_test = "11/18_上機測試_(範圍1-4)" # SETME
-
-links = [quiz_link(row.Name, row.StudentID, this_test) for row in eachrow(student_information)]
+# # Send Email After the scores are all registered.
 
 # row = eachrow(score_quiz)[1]
 url = "smtps://smtp.gmail.com:465"
