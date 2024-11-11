@@ -12,6 +12,7 @@ JSON = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
 OkReadGSheet = "760a1398-8f00-4da5-9475-268514cb6295"
 QRCoders = "f42e9828-16f3-11ed-2883-9126170b272d"
 SMTPClient = "c35d69d1-b747-5018-a192-25bc5e63c83d"
+StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
 
 [compat]
 julia = "1.9"
