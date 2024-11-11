@@ -3,6 +3,14 @@ uuid = "e7d79f13-e696-4146-bcb2-ae6c7bf92f55"
 authors = ["okatsn <okatsn@gmail.com> and contributors"]
 version = "1.0.0-DEV"
 
+[deps]
+CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
+Chain = "8be319e6-bccf-4806-a6f7-6fae938471bc"
+DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
+JSON = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
+OkReadGSheet = "760a1398-8f00-4da5-9475-268514cb6295"
+QRCoders = "f42e9828-16f3-11ed-2883-9126170b272d"
+
 [compat]
 julia = "1.9"
 
