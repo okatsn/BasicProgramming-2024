@@ -1,0 +1,6 @@
+outs:
+- md5: 91f612c81b9a85dcaa88697b5c3b64c2.dir
+  size: 381
+  nfiles: 1
+  hash: md5
+  path: local
