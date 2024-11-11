@@ -25,8 +25,11 @@ this_test = "11/18_上機測試_(範圍1-4)" # SETME
 
 for this_test in all_tests
 
-    links = [quiz_link(row.Name, row.StudentID, replace(this_test, " " => "_")) for row in eachrow(student_information)]
+    two_numbers = parse.(Int, split(match(r"\d+-\d+", this_test).match, "-"))
+    picked_two = rand(range(two_numbers...), 2)
 
-    print.(links)
+    links = [quiz_link(row.Name, row.StudentID, replace(this_test, " " => "_"), two_numbers[1], two_numbers[2]) for row in eachrow(student_information)]
+
+    println.(links)
 
 end
