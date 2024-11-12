@@ -25,10 +25,10 @@
 
 
 #for p in (
-  "qrcode_Python_for_beginners_1-4.csv",
-  "qrcode_Python_for_beginners_5-8.csv",
-  "qrcode_Python_for_beginners_9-12.csv",
-  "qrcode_Python_for_beginners_13-16.csv",
+  "data/QRCode/qrcode_Python_for_beginners_1-4.csv",
+  "data/QRCode/qrcode_Python_for_beginners_5-8.csv",
+  "data/QRCode/qrcode_Python_for_beginners_9-12.csv",
+  "data/QRCode/qrcode_Python_for_beginners_13-16.csv",
 ) {
 
   let qrcode_table = csv(p)

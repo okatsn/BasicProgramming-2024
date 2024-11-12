@@ -54,6 +54,6 @@ for this_test0 in all_tests
         )
         append!(qrcode_table, dfi)
     end
-    CSV.write("qrcode_$this_test.csv", qrcode_table)
+    CSV.write("data/QRCode/qrcode_$this_test.csv", qrcode_table)
 
 end
