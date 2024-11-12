@@ -1,0 +1,28 @@
+schema: '2.0'
+stages:
+  julia_generate_csv_qrcode:
+    cmd: julia --project=@. scripts/generate_qrcode.jl
+    outs:
+    - path: data/QRCode
+      hash: md5
+      md5: 687f03180e2d867a87767729893724d4.dir
+      size: 6866
+      nfiles: 4
+    - path: img/QRCode
+      hash: md5
+      md5: f95f78b0d1b7e38cc9a16b3298a85afa.dir
+      size: 150695
+      nfiles: 64
+  typst_compile:
+    cmd: typst compile test_reply_sheet.typ
+    deps:
+    - path: data/QRCode
+      hash: md5
+      md5: 687f03180e2d867a87767729893724d4.dir
+      size: 6866
+      nfiles: 4
+    - path: img/QRCode
+      hash: md5
+      md5: f95f78b0d1b7e38cc9a16b3298a85afa.dir
+      size: 150695
+      nfiles: 64
