@@ -8,12 +8,19 @@
   numbering: "1", // numbering the page
 )
 
-#let oneblock(name, id, quiznum_A, quiznum_B, title, qrcode) = grid(
+#let oneblock(name, id, quiznum_A, quiznum_B, title, qrcode) = table(
   columns: (60mm, 35mm, 35mm, 20mm, 40mm),
-  rows: (7mm, 15mm, 20mm),
-  gutter: 5pt
+  rows: (7mm, 7mm, 20mm),
+  table.cell(colspan: 4)[#title], table.cell(rowspan: 3, image(qrcode)),
+  [#name (#id)], [測驗A: #quiznum_A], [測驗B: #quiznum_B], [違規註記],
+  [(請簽名)], [(請登記分數)], [(請登記分數)], [(由助教填寫)],
 )
 
-#for (n, r) in qrcode_table.enumerate() {
+#let removefirst(x) = {
+  x.remove(0)
+  return x
+}
+
+#for (n, r) in removefirst(qrcode_table.enumerate()) {
   oneblock(r.at(name), r.at(id), r.at(quiznum_A), r.at(quiznum_B), r.at(title), r.at(qrcode))
 }
