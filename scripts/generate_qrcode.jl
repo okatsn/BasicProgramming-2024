@@ -23,6 +23,9 @@ all_tests = [
     "Python for beginners 13-16", # 12/30
 ]
 # this_test = all_tests[1]
+
+
+mkpath("data/QRCode") # to prevent directory not exist error using `dvc repro` since the whole data/QRCode is in gitignored.
 for this_test0 in all_tests
     this_test = replace(this_test0, " " => "_")
     # The QRCode/QuizNum table for `this_test`.
