@@ -7,3 +7,10 @@ stages:
     outs:
       - data/QRCode
       - img/QRCode
+  typst_compile:
+    # # This stage is added by
+    # dvc stage add -n typst_compile -d img/QRCode -d data/QRCode typst compile test_reply_sheet.typ
+    cmd: typst compile test_reply_sheet.typ
+    deps:
+      - data/QRCode
+      - img/QRCode
