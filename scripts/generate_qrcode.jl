@@ -25,13 +25,16 @@ all_tests = [
 # this_test = all_tests[1]
 for this_test0 in all_tests
     this_test = replace(this_test0, " " => "_")
+    # The QRCode/QuizNum table for `this_test`.
     qrcode_table = DataFrame()
-
-    two_numbers = parse.(Int, split(match(r"\d+-\d+", this_test).match, "-"))
-    picked_two = sample(range(two_numbers...), 2, replace=false) |> sort
 
     # row = eachrow(student_information)[1]
     for row in eachrow(student_information)
+        # Shuffle the test number on the level of each student
+
+        two_numbers = parse.(Int, split(match(r"\d+-\d+", this_test).match, "-"))
+        picked_two = sample(range(two_numbers...), 2, replace=false) |> sort
+
         link = quiz_link(row.Name, row.StudentID, this_test, picked_two[1], picked_two[2])
 
         fdir = "img/QRCode/$this_test"
