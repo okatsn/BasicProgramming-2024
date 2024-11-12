@@ -1,5 +1,3 @@
-#let qrcode_table = csv("qrcode_Python_for_beginners_1-4.csv")
-#let (name, id, quiznum_A, quiznum_B, title, qrcode) = range(qrcode_table.first().len())
 
 #let dscp(str) = text(size: 10pt, color.cmyk(0%, 0%, 0%, 60%), str)
 #let HEAD(str) = text(size: 15pt, weight: 900, str)
@@ -19,11 +17,27 @@
   dscp[(請簽名)], dscp[(請登記分數)], dscp[(請登記分數)], dscp8[(由助教填寫)],
 )
 
+
 #let removefirst(x) = {
   x.remove(0)
   return x
 }
 
-#for (n, r) in removefirst(qrcode_table.enumerate()) {
-  oneblock(r.at(name), r.at(id), r.at(quiznum_A), r.at(quiznum_B), r.at(title), r.at(qrcode))
+
+#for p in (
+  "qrcode_Python_for_beginners_1-4.csv",
+  "qrcode_Python_for_beginners_5-8.csv",
+  "qrcode_Python_for_beginners_9-12.csv",
+  "qrcode_Python_for_beginners_13-16.csv",
+) {
+
+  let qrcode_table = csv(p)
+  let (name, id, quiznum_A, quiznum_B, title, qrcode) = range(qrcode_table.first().len())
+
+  for (n, r) in removefirst(qrcode_table.enumerate()) {
+    oneblock(r.at(name), r.at(id), r.at(quiznum_A), r.at(quiznum_B), r.at(title), r.at(qrcode))
+  }
+
+  colbreak()
 }
+
