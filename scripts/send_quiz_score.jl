@@ -55,7 +55,7 @@ for row in eachrow(score_quiz)
     end
     subject = replace(row.Test, "_" => " ") * " 成績摘要"
     keynote1 = ifelse(ismissing(row.Note), "", "**備註**:$(row.Note)")
-    keynote2 = ifelse(ismissing(row.Note), "", "**違規註記**:$(row.Violate)")
+    keynote2 = ifelse(ismissing(row.Violate), "", "**違規註記**:$(row.Violate)")
     msg0 = @htl("""
     <html>
         <head>
@@ -93,7 +93,6 @@ for row in eachrow(score_quiz)
                     </ul>
                 </p>
 
-                <br>
                 <p>
                 $keynote1
                 <br>
