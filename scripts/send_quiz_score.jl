@@ -23,9 +23,8 @@ score_quiz = @chain readgsheet(secrets["score_quiz"]) begin
     transform!(:Time => ByRow(s -> replace(s, "上午" => "AM")); renamecols=false)
     transform!(:Time => ByRow(s -> replace(s, "下午" => "PM")); renamecols=false)
     transform!(:Time => ByRow(t -> DateTime(t, dateformat"yyyy/mm/dd p II:MM:SS")); renamecols=false)
+    filter!(:MyEmail => x -> (x in secrets["filler"]), _) # verify who fill the form.
     select(Not(r"[\u4e00-\u9fff]")) # remove all the columns with ZH characters
-    # filter!()
-    insertcols!(:sent => false)
 end
 
 
@@ -50,9 +49,8 @@ opt = SendOptions(
 
 # row = eachrow(score_quiz) |> first
 for row in eachrow(score_quiz)
-    if row.sent
-        continue
-    end
+
+
     subject = replace(row.Test, "_" => " ") * " 成績摘要"
     keynote1 = ifelse(ismissing(row.Note), "", "**備註**:$(row.Note)")
     keynote2 = ifelse(ismissing(row.Violate), "", "**違規註記**:$(row.Violate)")
