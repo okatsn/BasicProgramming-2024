@@ -2,6 +2,7 @@ using JSON, OkReadGSheet, DataFrames, CSV, Chain, SMTPClient, HypertextLiteral
 using Dates
 using OkReadGSheet
 
+# SETME:
 do_send_email = false
 this_test = "Python_for_beginners_1-4"
 
@@ -25,6 +26,7 @@ score_quiz = @chain readgsheet(secrets["score_quiz"]) begin
     transform!(:Time => ByRow(s -> replace(s, "下午" => "PM")); renamecols=false)
     transform!(:Time => ByRow(t -> DateTime(t, dateformat"yyyy/mm/dd p II:MM:SS")); renamecols=false)
     filter!(:MyEmail => x -> (x in secrets["filler"]), _) # verify who fill the form.
+    filter!(:Test => x -> (x == this_test), _)
     select(Not(r"[\u4e00-\u9fff]")) # remove all the columns with ZH characters
 end
 
@@ -50,9 +52,6 @@ opt = SendOptions(
 
 # row = eachrow(score_quiz) |> first
 for row in eachrow(score_quiz)
-    if row.Test != this_test
-        continue
-    end
 
     subject = replace(row.Test, "_" => " ") * " 成績摘要"
     keynote1 = ifelse(ismissing(row.Note), "", "**備註**:$(row.Note)")
@@ -132,7 +131,6 @@ for row in eachrow(score_quiz)
     # Preview the body: String(take!(body))
 
     resp = send(url, rcpt, from, body, opt)
-    row.sent = true
 end
 
 CSV.write("data/quiz_score.csv", score_quiz, header=false, append=true)
