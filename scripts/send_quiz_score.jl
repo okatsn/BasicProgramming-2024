@@ -135,4 +135,4 @@ for row in eachrow(score_quiz)
     row.sent = true
 end
 
-CSV.write("data/quiz_score.csv", score_quiz, header=true, append=true)
+CSV.write("data/quiz_score.csv", score_quiz, header=false, append=true)
