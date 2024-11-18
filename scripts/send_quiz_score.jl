@@ -3,6 +3,7 @@ using Dates
 using OkReadGSheet
 
 do_send_email = false
+this_test = "Python_for_beginners_1-4"
 
 secrets = JSON.parsefile("local/secrets.json")
 
@@ -49,7 +50,9 @@ opt = SendOptions(
 
 # row = eachrow(score_quiz) |> first
 for row in eachrow(score_quiz)
-
+    if row.Test != this_test
+        continue
+    end
 
     subject = replace(row.Test, "_" => " ") * " 成績摘要"
     keynote1 = ifelse(ismissing(row.Note), "", "**備註**:$(row.Note)")
