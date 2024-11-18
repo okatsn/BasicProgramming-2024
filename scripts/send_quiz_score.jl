@@ -13,7 +13,7 @@ score_quiz = @chain readgsheet(secrets["score_quiz"]) begin
         "姓名" => :Name,
         "測驗A分數" => :Score_A,
         "頁面編號A" => :QuizNum_A,
-        "測驗B分數" => :Score_B,
+        "測驗B分數 " => :Score_B,
         "頁面編號B" => :QuizNum_B,
         "電子郵件地址" => :MyEmail,
         "違規註記" => :Violate,
@@ -48,11 +48,14 @@ opt = SendOptions(
     passwd=sender_key,
 )
 
+# row = eachrow(score_quiz) |> first
 for row in eachrow(score_quiz)
     if row.sent
         continue
     end
     subject = replace(row.Test, "_" => " ") * " 成績摘要"
+    keynote1 = ifelse(ismissing(row.Note), "", "**備註**:$(row.Note)")
+    keynote2 = ifelse(ismissing(row.Note), "", "**違規註記**:$(row.Violate)")
     msg0 = @htl("""
     <html>
         <head>
@@ -89,6 +92,14 @@ for row in eachrow(score_quiz)
                         <li>測驗B：$(row.Score_B)</li>
                     </ul>
                 </p>
+
+                <br>
+                <p>
+                $keynote1
+                <br>
+                $keynote2
+                </p>
+
                 <br>
                 若有任何疑問，請回信 $sender 或至科一館 S113 找助教。
             </p>
