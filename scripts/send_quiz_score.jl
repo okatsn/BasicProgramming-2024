@@ -134,3 +134,5 @@ for row in eachrow(score_quiz)
     resp = send(url, rcpt, from, body, opt)
     row.sent = true
 end
+
+CSV.write("data/quiz_score.csv", score_quiz, header=true, append=true)

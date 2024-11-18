@@ -1,0 +1,5 @@
+outs:
+- md5: 31ea0c59b3ecc85270088972dbd4d367
+  size: 87
+  hash: md5
+  path: quiz_score.csv
