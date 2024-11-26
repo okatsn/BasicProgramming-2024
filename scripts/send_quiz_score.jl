@@ -9,12 +9,17 @@ this_test = "Python_for_beginners_1-4"
 
 secrets = JSON.parsefile("local/secrets.json")
 
+keepthistest = :Test => x -> (x .== this_test)
+
 score_quiz = @chain readgsheet(secrets["score_quiz"]) begin
     quizscoreprep!
     filter!(:MyEmail => x -> (x in secrets["filler"]), _) # verify who fill the form.
-    filter!(:Test => x -> (x == this_test), _)
+    filter!(keepthistest, _)
 end
 
+
+issent_ref = CSV.read("data/issent.csv", DataFrame)
+issent_this = subset(issent_ref, keepthistest; view=true)
 
 
 sender_key = secrets["sender_key"]
@@ -116,6 +121,13 @@ for row in eachrow(score_quiz)
     # Preview the body: String(take!(body))
 
     resp = send(url, rcpt, from, body, opt)
+    if do_send_email
+        id_sent = subset(issent_this, :StudentID => (x -> x .== row.StudentID); view=true).issent
+        only(id_sent)
+        id_sent[1] = true
+        CSV.write("data/issent.csv", issent_ref)
+    end
+
 end
 
 CSV.write("data/quiz_score.csv", score_quiz, header=false, append=true)
