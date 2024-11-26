@@ -1,5 +1,6 @@
 using JSON, QRCoders, CSV, DataFrames
 using StatsBase
+using BasicProgramming2024
 
 
 secrets = JSON.parsefile("local/secrets.json")
@@ -16,17 +17,12 @@ quiz_link(my_name, stud_ID, test_name, quiznum_A, quiznum_B) = "$(form_quiz)?usp
 # # Generate QRCode
 
 
-all_tests = [
-    "Python for beginners 1-4", # 11/18
-    "Python for beginners 5-8", # 12/02
-    "Python for beginners 9-12", # 12/23
-    "Python for beginners 13-16", # 12/30
-]
-# this_test = all_tests[1]
+
+# this_test = BasicProgramming2024.all_tests[1]
 
 
 mkpath("data/QRCode") # to prevent directory not exist error using `dvc repro` since the whole data/QRCode is in gitignored.
-for this_test0 in all_tests
+for this_test0 in BasicProgramming2024.all_tests
     this_test = replace(this_test0, " " => "_")
     # The QRCode/QuizNum table for `this_test`.
     qrcode_table = DataFrame()
