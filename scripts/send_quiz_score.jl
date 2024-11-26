@@ -1,6 +1,7 @@
 using JSON, OkReadGSheet, DataFrames, CSV, Chain, SMTPClient, HypertextLiteral
 using Dates
 using OkReadGSheet
+using BasicProgramming2024
 
 # SETME:
 do_send_email = false
@@ -9,25 +10,9 @@ this_test = "Python_for_beginners_1-4"
 secrets = JSON.parsefile("local/secrets.json")
 
 score_quiz = @chain readgsheet(secrets["score_quiz"]) begin
-    transform!(
-        "測驗名稱" => :Test,
-        "學號" => :StudentID,
-        "姓名" => :Name,
-        "測驗A分數" => :Score_A,
-        "頁面編號A" => :QuizNum_A,
-        "測驗B分數 " => :Score_B,
-        "頁面編號B" => :QuizNum_B,
-        "電子郵件地址" => :MyEmail,
-        "違規註記" => :Violate,
-        "備註" => :Note,
-        "時間戳記" => :Time
-    )
-    transform!(:Time => ByRow(s -> replace(s, "上午" => "AM")); renamecols=false)
-    transform!(:Time => ByRow(s -> replace(s, "下午" => "PM")); renamecols=false)
-    transform!(:Time => ByRow(t -> DateTime(t, dateformat"yyyy/mm/dd p II:MM:SS")); renamecols=false)
+    quizscoreprep!
     filter!(:MyEmail => x -> (x in secrets["filler"]), _) # verify who fill the form.
     filter!(:Test => x -> (x == this_test), _)
-    select(Not(r"[\u4e00-\u9fff]")) # remove all the columns with ZH characters
 end
 
 
