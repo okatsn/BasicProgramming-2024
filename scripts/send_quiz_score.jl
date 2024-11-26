@@ -42,7 +42,7 @@ opt = SendOptions(
 
 # row = eachrow(score_quiz) |> first
 for row in eachrow(score_quiz)
-
+    id_sent = subset(issent_this, :StudentID => (x -> x .== row.StudentID); view=true).issent
     subject = replace(row.Test, "_" => " ") * " 成績摘要"
     keynote1 = ifelse(ismissing(row.Note), "", "**備註**:$(row.Note)")
     keynote2 = ifelse(ismissing(row.Violate), "", "**違規註記**:$(row.Violate)")
@@ -97,8 +97,10 @@ for row in eachrow(score_quiz)
     """)
 
     recipients = []
-    if do_send_email
+    in_rcpt_list = false
+    if !only(id_sent) && do_send_email
         push!(recipients, contact[row.StudentID])
+        in_rcpt_list = true
     end
 
     if isempty(recipients)
@@ -121,9 +123,7 @@ for row in eachrow(score_quiz)
     # Preview the body: String(take!(body))
 
     resp = send(url, rcpt, from, body, opt)
-    if do_send_email
-        id_sent = subset(issent_this, :StudentID => (x -> x .== row.StudentID); view=true).issent
-        only(id_sent)
+    if do_send_email && in_rcpt_list
         id_sent[1] = true
         CSV.write("data/issent.csv", issent_ref)
     end
