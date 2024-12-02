@@ -16,6 +16,7 @@ stages:
       - img/QRCode
   update_quiz_score:
     # https://dvc.org/doc/user-guide/project-structure/dvcyaml-files#templating
+    # dvc stage add -n update_quiz_score -p this_test -o data/quiz_score.csv julia --project=@. scripts/update_quiz_score.jl
     cmd: julia --project=@. scripts/update_quiz_score.jl ${this_test}
     params:
       - this_test
