@@ -24,3 +24,14 @@ else
 end
 
 CSV.write("data/quiz_score.csv", score_quiz, header=header, append=app)
+# KEYNOTE: You need to set `persist: true` in dvc.yaml; otherwise, the output will be removed before `dvc repro`.
+# E.g.
+# ```dvc.yaml
+#     outs:
+#       - data/quiz_score.csv:
+#           persist: true
+# ```
+# Please refer:
+# - DVC add with option `--outs-persist`: https://dvc.org/doc/command-reference/stage/add#--outs-persist
+# - https://github.com/iterative/dvc/issues/1214
+# - https://github.com/iterative/dvc.org/pull/2029/files/4075dd2834bbcdf8bdd7fa419071933dfdace398

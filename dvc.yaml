@@ -20,4 +20,5 @@ stages:
     params:
       - this_test
     outs:
-      - data/quiz_score.csv
+      - data/quiz_score.csv:
+          persist: true
