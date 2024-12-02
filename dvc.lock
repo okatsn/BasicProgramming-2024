@@ -26,3 +26,13 @@ stages:
       md5: f95f78b0d1b7e38cc9a16b3298a85afa.dir
       size: 150695
       nfiles: 64
+  update_quiz_score:
+    cmd: julia --project=@. scripts/update_quiz_score.jl Python_for_beginners_1-4
+    params:
+      params.yaml:
+        this_test: Python_for_beginners_1-4
+    outs:
+    - path: data/quiz_score.csv
+      hash: md5
+      md5: 5216967f26b5c1e172a28d3af8975d6d
+      size: 1647

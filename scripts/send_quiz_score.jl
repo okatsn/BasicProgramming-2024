@@ -1,23 +1,16 @@
-using JSON, OkReadGSheet, DataFrames, CSV, Chain, SMTPClient, HypertextLiteral
+using JSON, DataFrames, CSV, Chain, SMTPClient, HypertextLiteral
 using Dates
-using OkReadGSheet
 using BasicProgramming2024
 
 # SETME:
 do_send_email = false
-this_test = "Python_for_beginners_5-8"
-
 secrets = JSON.parsefile("local/secrets.json")
 
+# ARGS = ["Python_for_beginners_5-8", ]
+this_test = ARGS[1]
 keepthistest = :Test => x -> (x .== this_test)
 
-score_quiz = @chain readgsheet(secrets["score_quiz"]) begin
-    quizscoreprep!
-    filter!(:MyEmail => x -> (x in secrets["filler"]), _) # verify who fill the form.
-    filter!(keepthistest, _)
-end
-
-
+score_quiz = CSV.read("data/quiz_score.csv", DataFrame)
 issent_ref = CSV.read("data/issent.csv", DataFrame)
 issent_this = subset(issent_ref, keepthistest; view=true)
 
@@ -129,5 +122,3 @@ for row in eachrow(score_quiz)
     end
 
 end
-
-CSV.write("data/quiz_score.csv", score_quiz, header=false, append=true)

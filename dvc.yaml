@@ -14,3 +14,10 @@ stages:
     deps:
       - data/QRCode
       - img/QRCode
+  update_quiz_score:
+    # https://dvc.org/doc/user-guide/project-structure/dvcyaml-files#templating
+    cmd: julia --project=@. scripts/update_quiz_score.jl ${this_test}
+    params:
+      - this_test
+    outs:
+      - data/quiz_score.csv
