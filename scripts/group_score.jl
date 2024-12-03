@@ -23,7 +23,16 @@
 # - (a): one 評分者 should have exactly three answers where 被評組別 is the other three.
 # - (b): one 評分者 should have exactly three answers where 被評組員 is the other three.
 
-using JSON, OkReadGSheet, DataFrames, CSV, Chain
-# using SMTPClient, HypertextLiteral
-using Dates
-using OkReadGSheet
+using JSON, QRCoders, CSV, DataFrames
+using StatsBase
+using BasicProgramming2024
+
+
+secrets = JSON.parsefile("local/secrets.json")
+form_innerg = secrets["form_innerGroup"]
+
+student_information = CSV.read("student_information.csv", DataFrame)
+
+quiz_link(MEMBER1, MEMBER2, MEMBER3) = "$(form_innerg)?usp=pp_url&entry.1959851903=$MEMBER1&entry.1626041384=$MEMBER2&entry.143075096=$MEMBER3"
+
+quiz_link("Tim", "Tom", "Terry")
