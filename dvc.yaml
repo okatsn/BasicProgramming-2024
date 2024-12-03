@@ -5,20 +5,24 @@ stages:
   julia_generate_csv_qrcode:
     cmd: julia --project=@. scripts/generate_qrcode.jl
     outs:
-      - data/QRCode
-      - img/QRCode
+    - data/QRCode
+    - img/QRCode
   typst_compile:
     # # This stage is added by
     # dvc stage add -n typst_compile -d img/QRCode -d data/QRCode typst compile test_reply_sheet.typ
     cmd: typst compile test_reply_sheet.typ
     deps:
-      - data/QRCode
-      - img/QRCode
+    - data/QRCode
+    - img/QRCode
   generate_qrcode_group_score:
     cmd: julia --project=@. scripts/generate_qrcode_group_score.jl
     deps:
-      - student_information.csv
+    - student_information.csv
     outs:
-      - data/group_qrcode_links.csv
-      - img/QRCode_InterGroupLinks:
-          persist: true
+    - data/group_qrcode_links.csv
+    - img/QRCode_InterGroupLinks:
+        persist: true
+  typst_qrcode_group:
+    cmd: typst compile group_score_fill.typ
+    deps:
+    - data/group_qrcode_links.csv
