@@ -51,6 +51,7 @@ allgroups = combine(groupby(student_information, :GroupID),
 id2namelist(x) = Dict(allgroups.GroupID .=> allgroups.NameList)[x]
 
 df0 = DataFrame(
+    :gmail => String[],
     :Name => String[],
     :StudentID => Int[],
     :Link1 => String[],
@@ -87,6 +88,7 @@ for row in eachrow(student_information)
     exportqrcode(link4, fpath4)
 
     dfi = DataFrame(
+        :gmail => row.gmail,
         :Name => row.Name,
         :StudentID => row.StudentID,
         :Link1 => qcs[1].link,

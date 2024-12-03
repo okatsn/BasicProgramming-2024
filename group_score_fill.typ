@@ -5,6 +5,7 @@
 )
 
 #let oneblock(
+  gmail,
   name,
   id,
   link1,
@@ -21,9 +22,9 @@
 ) = [
 
   == 評分者：#name (#id)
-  *注意!*：您必須使用您在本課程登錄的 gmail 帳號登入填單
+  *注意!*：您必須使用您在本課程登錄的 gmail 帳號 (#gmail) 登入填單
   #table(
-    columns: (10mm, 3fr, 4fr, 15mm, 40mm), // or simply `3`
+    columns: (10mm, 60mm, 50mm, 15mm, 50mm), // or simply `3`
     gutter: 0pt, // Default space between cells
     inset: 10pt,
     align: horizon,
@@ -66,7 +67,7 @@
 
 #let qrcode_table = csv("data/group_qrcode_links.csv")
 
-#let (name, id, link1, path1, desc1, link2, path2, desc2, link3, path3, desc3, link4, path4) = range(
+#let (gmail, name, id, link1, path1, desc1, link2, path2, desc2, link3, path3, desc3, link4, path4) = range(
   qrcode_table.first().len(),
 )
 
@@ -77,6 +78,7 @@
 
 #for (n, r) in removefirst(qrcode_table.enumerate()) {
   oneblock(
+    r.at(gmail),
     r.at(name),
     r.at(id),
     r.at(link1),
