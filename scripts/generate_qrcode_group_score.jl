@@ -27,7 +27,7 @@ using JSON, QRCoders, CSV, DataFrames
 using StatsBase
 using BasicProgramming2024
 
-fdir = "img/QRCode/InterGroupLinks"
+fdir = "img/QRCode_InterGroupLinks"
 mkpath(fdir)
 
 secrets = JSON.parsefile("local/secrets.json")

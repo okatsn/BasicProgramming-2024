@@ -20,4 +20,5 @@ stages:
       - student_information.csv
     outs:
       - data/group_qrcode_links.csv
-      - img/QRCode_InterGroupLinks
+      - img/QRCode_InterGroupLinks:
+          persist: true
