@@ -50,10 +50,26 @@ id2namelist(x) = Dict(allgroups.GroupID .=> allgroups.NameList)[x]
 # row = eachrow(student_information)[1]
 for row in student_information
     othergroups = subset(allgroups, :GroupID => (x -> x .!= row.GroupID))
+    @assert nrow(othergroups) == 3
+
     # g = othergroups |> eachrow  |> first
-    for g in eachrow(othergroups)
-        link = quiz_link(g.GroupID * "($(g.NameList))")
-        fpath = "Link_$(row.StudentID)_$(g.GroupID)"
-        exportqrcode(link, fpath)
-    end
+    qcs = [(
+        link = quiz_link(g.GroupID * "($(g.NameList))");
+        fpath = "Link_$(row.StudentID)_$(g.GroupID)";
+        exportqrcode(link, fpath);
+        (link=link, path=fpath)
+    ) for g in eachrow(othergroups)]
+
+
+
+    dfi = DataFrame(
+        :Name => row.Name,
+        :StudentID => row.StudentID,
+        :Link1 => qcs[1].link,
+        :Path1 => qcs[1].path,
+        :Link2 => qcs[2].link,
+        :Path2 => qcs[2].path,
+        :Link3 => qcs[3].link,
+        :Path3 => qcs[3].path,
+    )
 end
