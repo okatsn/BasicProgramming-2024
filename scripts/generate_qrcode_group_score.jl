@@ -75,14 +75,16 @@ for row in eachrow(student_information)
     # g = othergroups |> eachrow  |> first
     qcs = [(
         link = quiz_link(g.GroupID);
-        fname = "Link_$(row.StudentID)_$(g.GroupID)";
-        exportqrcode(link, joinpath(fdir, fname));
-        (link=link, file=fname, description="對$(g.GroupID)組($(g.NameList))評分")
+        fname = "Link_$(row.StudentID)_$(g.GroupID).png";
+        fpath = joinpath(fdir, fname);
+        exportqrcode(link, fpath);
+        (link=link, file=fpath, description="對$(g.GroupID)組($(g.NameList))評分")
     ) for g in eachrow(othergroups)]
 
     link4 = quiz_link(filter(x -> row.Name != x, mygroup.NameVec)...)
-    file4 = "interGroupFor_$(row.StudentID)"
-    exportqrcode(link4, joinpath(fdir, file4))
+    file4 = "interGroupFor_$(row.StudentID).png"
+    fpath4 = joinpath(fdir, file4)
+    exportqrcode(link4, fpath4)
 
     dfi = DataFrame(
         :Name => row.Name,
@@ -97,7 +99,7 @@ for row in eachrow(student_information)
         :Path3 => qcs[3].file,
         :Description3 => qcs[3].description,
         :Link4 => link4,
-        :Path4 => file4,
+        :Path4 => fpath4,
     )
 
     append!(df0, dfi)
