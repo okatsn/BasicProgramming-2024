@@ -30,9 +30,13 @@ using BasicProgramming2024
 
 secrets = JSON.parsefile("local/secrets.json")
 form_innerg = secrets["form_innerGroup"]
+form_interg = secrets["form_interGroup"]
 
 student_information = CSV.read("student_information.csv", DataFrame)
 
 quiz_link(MEMBER1, MEMBER2, MEMBER3) = "$(form_innerg)?usp=pp_url&entry.1959851903=$MEMBER1&entry.1626041384=$MEMBER2&entry.143075096=$MEMBER3"
+quiz_link(GROUP) = "$(form_interg)?usp=pp_url&entry.143075096=$GROUP"
 
 quiz_link("Tim", "Tom", "Terry")
+
+quiz_link("A")
