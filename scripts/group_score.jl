@@ -50,8 +50,24 @@ allgroups = combine(groupby(student_information, :GroupID),
 
 id2namelist(x) = Dict(allgroups.GroupID .=> allgroups.NameList)[x]
 
+df0 = DataFrame(
+    :Name => String[],
+    :StudentID => Int[],
+    :Link1 => String[],
+    :Path1 => String[],
+    :Description1 => String[],
+    :Link2 => String[],
+    :Path2 => String[],
+    :Description2 => String[],
+    :Link3 => String[],
+    :Path3 => String[],
+    :Description3 => String[],
+    :Link4 => String[],
+    :Path4 => String[],
+)
+
 # row = eachrow(student_information)[1]
-for row in student_information
+for row in eachrow(student_information)
     othergroups = subset(allgroups, :GroupID => (x -> x .!= row.GroupID))
     mygroup = subset(allgroups, :GroupID => (x -> x .== row.GroupID)) |> eachrow |> only
     @assert nrow(othergroups) == 3
@@ -83,4 +99,8 @@ for row in student_information
         :Link4 => link4,
         :Path4 => file4,
     )
+
+    append!(df0, dfi)
 end
+
+CSV.write("data/group_qrcode_links.csv", df0)
