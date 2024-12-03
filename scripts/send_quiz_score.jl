@@ -94,7 +94,7 @@ for row in eachrow(score_quiz)
     if !only(id_sent) && do_send_email
         push!(recipients, contact[row.StudentID])
         in_rcpt_list = true
-    end
+    end # only when `id_sent[1]` is `false` (not sent yet), this student will be push into the recipient list.
 
     if isempty(recipients)
         push!(recipients, "tsung.hsi@g.ncu.edu.tw")
@@ -117,7 +117,7 @@ for row in eachrow(score_quiz)
 
     resp = send(url, rcpt, from, body, opt)
     if do_send_email && in_rcpt_list
-        id_sent[1] = true
+        id_sent[1] = true # Noted that `id_sent` is a view that linked to `issent_ref`
         CSV.write("data/issent.csv", issent_ref)
     end
 
