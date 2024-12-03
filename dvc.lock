@@ -29,6 +29,10 @@ stages:
   generate_qrcode_group_score:
     cmd: julia --project=@. scripts/generate_qrcode_group_score.jl
     deps:
+    - path: scripts/generate_qrcode_group_score.jl
+      hash: md5
+      md5: e1f00349193bb060b6fe68e3856d7e98
+      size: 3472
     - path: student_information.csv
       hash: md5
       md5: a630a116c30f5b832cdaf64f195ba19c
@@ -52,5 +56,5 @@ stages:
       size: 16158
     - path: group_score_fill.typ
       hash: md5
-      md5: 80d51886f03e1a1e7346f84a91982a1e
-      size: 2390
+      md5: 6404a6792b822675714bcda8516d06ac
+      size: 2439

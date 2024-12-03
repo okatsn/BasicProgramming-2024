@@ -22,7 +22,7 @@
 ) = [
 
   == 評分者：#name (#id)
-  *注意!*：您必須使用您在本課程登錄的 gmail 帳號 (#gmail) 登入填單
+  #text(fill: red)[*注意!*：您必須使用您在本課程登錄的 gmail 帳號 (#text(gmail, weight: 900, fill: blue)) 登入填單]
   #table(
     columns: (10mm, 60mm, 50mm, 15mm, 50mm), // or simply `3`
     gutter: 0pt, // Default space between cells
