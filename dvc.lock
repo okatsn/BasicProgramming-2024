@@ -26,3 +26,27 @@ stages:
       md5: f95f78b0d1b7e38cc9a16b3298a85afa.dir
       size: 150695
       nfiles: 64
+  generate_qrcode_group_score:
+    cmd: julia --project=@. scripts/generate_qrcode_group_score.jl
+    deps:
+    - path: student_information.csv
+      hash: md5
+      md5: a630a116c30f5b832cdaf64f195ba19c
+      size: 1773
+    outs:
+    - path: data/group_qrcode_links.csv
+      hash: md5
+      md5: f5ab5a4af403060cc1628fadb80f14e5
+      size: 15782
+    - path: img/QRCode_InterGroupLinks
+      hash: md5
+      md5: b3709e93e2674afc50d68fb2afe94f07.dir
+      size: 111084
+      nfiles: 64
+  typst_qrcode_group:
+    cmd: typst compile group_score_fill.typ
+    deps:
+    - path: data/group_qrcode_links.csv
+      hash: md5
+      md5: f5ab5a4af403060cc1628fadb80f14e5
+      size: 15782
