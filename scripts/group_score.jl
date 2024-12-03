@@ -76,13 +76,13 @@ for row in eachrow(student_information)
     qcs = [(
         link = quiz_link(g.GroupID);
         fname = "Link_$(row.StudentID)_$(g.GroupID)";
-        exportqrcode(link, fname);
+        exportqrcode(joinpath(fdir, link), fname);
         (link=link, file=fname, description="對$(g.GroupID)組($(g.NameList))評分")
     ) for g in eachrow(othergroups)]
 
     link4 = quiz_link(filter(x -> row.Name != x, mygroup.NameVec)...)
     file4 = "interGroupFor_$(row.StudentID)"
-    exportqrcode(link4, file4)
+    exportqrcode(joinpath(fdir, link4), file4)
 
     dfi = DataFrame(
         :Name => row.Name,
