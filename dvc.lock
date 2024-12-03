@@ -36,8 +36,8 @@ stages:
     outs:
     - path: data/group_qrcode_links.csv
       hash: md5
-      md5: f5ab5a4af403060cc1628fadb80f14e5
-      size: 15782
+      md5: cc3e74beca5d8a633c392a2f5b9afe73
+      size: 16158
     - path: img/QRCode_InterGroupLinks
       hash: md5
       md5: b3709e93e2674afc50d68fb2afe94f07.dir
@@ -48,5 +48,9 @@ stages:
     deps:
     - path: data/group_qrcode_links.csv
       hash: md5
-      md5: f5ab5a4af403060cc1628fadb80f14e5
-      size: 15782
+      md5: cc3e74beca5d8a633c392a2f5b9afe73
+      size: 16158
+    - path: group_score_fill.typ
+      hash: md5
+      md5: 80d51886f03e1a1e7346f84a91982a1e
+      size: 2390
