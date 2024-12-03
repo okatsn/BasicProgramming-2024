@@ -54,10 +54,10 @@ for row in student_information
 
     # g = othergroups |> eachrow  |> first
     qcs = [(
-        link = quiz_link(g.GroupID * "($(g.NameList))");
-        fpath = "Link_$(row.StudentID)_$(g.GroupID)";
-        exportqrcode(link, fpath);
-        (link=link, path=fpath)
+        link = quiz_link(g.GroupID);
+        fname = "Link_$(row.StudentID)_$(g.GroupID)";
+        exportqrcode(link, fname);
+        (link=link, file=fname, description="對$(g.GroupID)組($(g.NameList))評分")
     ) for g in eachrow(othergroups)]
 
 
@@ -66,10 +66,13 @@ for row in student_information
         :Name => row.Name,
         :StudentID => row.StudentID,
         :Link1 => qcs[1].link,
-        :Path1 => qcs[1].path,
+        :Path1 => qcs[1].file,
+        :Description1 => qcs[1].description,
         :Link2 => qcs[2].link,
-        :Path2 => qcs[2].path,
+        :Path2 => qcs[2].file,
+        :Description2 => qcs[2].description,
         :Link3 => qcs[3].link,
-        :Path3 => qcs[3].path,
+        :Path3 => qcs[3].file,
+        :Description3 => qcs[3].description,
     )
 end
