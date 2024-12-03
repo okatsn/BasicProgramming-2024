@@ -18,6 +18,7 @@ stages:
     cmd: julia --project=@. scripts/generate_qrcode_group_score.jl
     deps:
       - student_information.csv
+      - scripts/generate_qrcode_group_score.jl
     outs:
       - data/group_qrcode_links.csv
       - img/QRCode_InterGroupLinks:
