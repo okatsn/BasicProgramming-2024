@@ -27,6 +27,8 @@ using JSON, QRCoders, CSV, DataFrames
 using StatsBase
 using BasicProgramming2024
 
+fdir = "img/QRCode/InterGroupLinks"
+mkpath(fdir)
 
 secrets = JSON.parsefile("local/secrets.json")
 form_innerg = secrets["form_innerGroup"]
@@ -40,3 +42,18 @@ quiz_link(GROUP) = "$(form_interg)?usp=pp_url&entry.143075096=$GROUP"
 quiz_link("Tim", "Tom", "Terry")
 
 quiz_link("A")
+
+allgroups = combine(groupby(student_information, :GroupID), :Name => (x -> join(x, "、")) => :NameList) |> (df -> sort!(df, :GroupID))
+
+id2namelist(x) = Dict(allgroups.GroupID .=> allgroups.NameList)[x]
+
+# row = eachrow(student_information)[1]
+for row in student_information
+    othergroups = subset(allgroups, :GroupID => (x -> x .!= row.GroupID))
+    # g = othergroups |> eachrow  |> first
+    for g in eachrow(othergroups)
+        link = quiz_link(g.GroupID * "($(g.NameList))")
+        fpath = "Link_$(row.StudentID)_$(g.GroupID)"
+        exportqrcode(link, fpath)
+    end
+end
