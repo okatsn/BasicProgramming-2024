@@ -43,13 +43,17 @@ quiz_link("Tim", "Tom", "Terry")
 
 quiz_link("A")
 
-allgroups = combine(groupby(student_information, :GroupID), :Name => (x -> join(x, "、")) => :NameList) |> (df -> sort!(df, :GroupID))
+allgroups = combine(groupby(student_information, :GroupID),
+    :Name => (x -> join(x, "、")) => :NameList,
+    :Name => (x -> Ref(x)) => :NameVec
+) |> (df -> sort!(df, :GroupID))
 
 id2namelist(x) = Dict(allgroups.GroupID .=> allgroups.NameList)[x]
 
 # row = eachrow(student_information)[1]
 for row in student_information
     othergroups = subset(allgroups, :GroupID => (x -> x .!= row.GroupID))
+    mygroup = subset(allgroups, :GroupID => (x -> x .== row.GroupID)) |> eachrow |> only
     @assert nrow(othergroups) == 3
 
     # g = othergroups |> eachrow  |> first
@@ -60,7 +64,9 @@ for row in student_information
         (link=link, file=fname, description="對$(g.GroupID)組($(g.NameList))評分")
     ) for g in eachrow(othergroups)]
 
-
+    link4 = quiz_link(filter(x -> row.Name != x, mygroup.NameVec)...)
+    file4 = "interGroupFor_$(row.StudentID)"
+    exportqrcode(link4, file4)
 
     dfi = DataFrame(
         :Name => row.Name,
@@ -74,5 +80,7 @@ for row in student_information
         :Link3 => qcs[3].link,
         :Path3 => qcs[3].file,
         :Description3 => qcs[3].description,
+        :Link4 => link4,
+        :Path4 => file4,
     )
 end

@@ -7,7 +7,7 @@
 #let oneblock() = [
 
   == 評分者：XXX
-
+  *注意!*：您必須使用您在本課程登錄的 gmail 帳號登入填單
   #table(
     columns: (10mm, 1fr, 1fr, 15mm, 40mm), // or simply `3`
     gutter: 0pt, // Default space between cells
