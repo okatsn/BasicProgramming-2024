@@ -6,6 +6,9 @@ using Chain, DataFrames, Dates
 include("preprocess.jl")
 export quizscoreprep!
 
+include("takelast.jl")
+export takelast
+
 # # Constants
 
 # Titles for test names
