@@ -46,4 +46,12 @@ const gformheaders_innergroupscore = (
     "組員3的表現" => "Score_3",
     "附註" => ":Note",
 )
+
+const gformheaders_intergroupscore = (
+    "時間戳記" => ":Time",
+    "電子郵件地址" => ":TheirEmail",
+    "報告組別" => "Group",
+    "報告與內容綜合表現" => "Score",
+    "附註" => ":Note",
+)
 end
