@@ -4,7 +4,7 @@ module BasicProgramming2024
 
 using Chain, DataFrames, Dates
 include("preprocess.jl")
-export quizscoreprep!
+export quizscoreprep!, innerscoreprep!, interscoreprep!
 
 include("takelast.jl")
 export takelast
