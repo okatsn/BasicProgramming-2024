@@ -1,60 +1,70 @@
-schema: '2.0'
+schema: "2.0"
 stages:
   julia_generate_csv_qrcode:
     cmd: julia --project=@. scripts/generate_qrcode.jl
     outs:
-    - path: data/QRCode
-      hash: md5
-      md5: 687f03180e2d867a87767729893724d4.dir
-      size: 6866
-      nfiles: 4
-    - path: img/QRCode
-      hash: md5
-      md5: f95f78b0d1b7e38cc9a16b3298a85afa.dir
-      size: 150695
-      nfiles: 64
+      - path: data/QRCode
+        hash: md5
+        md5: 687f03180e2d867a87767729893724d4.dir
+        size: 6866
+        nfiles: 4
+      - path: img/QRCode
+        hash: md5
+        md5: f95f78b0d1b7e38cc9a16b3298a85afa.dir
+        size: 150695
+        nfiles: 64
   typst_compile:
     cmd: typst compile test_reply_sheet.typ
     deps:
-    - path: data/QRCode
-      hash: md5
-      md5: 687f03180e2d867a87767729893724d4.dir
-      size: 6866
-      nfiles: 4
-    - path: img/QRCode
-      hash: md5
-      md5: f95f78b0d1b7e38cc9a16b3298a85afa.dir
-      size: 150695
-      nfiles: 64
+      - path: data/QRCode
+        hash: md5
+        md5: 687f03180e2d867a87767729893724d4.dir
+        size: 6866
+        nfiles: 4
+      - path: img/QRCode
+        hash: md5
+        md5: f95f78b0d1b7e38cc9a16b3298a85afa.dir
+        size: 150695
+        nfiles: 64
   generate_qrcode_group_score:
     cmd: julia --project=@. scripts/generate_qrcode_group_score.jl
     deps:
-    - path: scripts/generate_qrcode_group_score.jl
-      hash: md5
-      md5: e1f00349193bb060b6fe68e3856d7e98
-      size: 3472
-    - path: student_information.csv
-      hash: md5
-      md5: a630a116c30f5b832cdaf64f195ba19c
-      size: 1773
+      - path: scripts/generate_qrcode_group_score.jl
+        hash: md5
+        md5: e1f00349193bb060b6fe68e3856d7e98
+        size: 3472
+      - path: student_information.csv
+        hash: md5
+        md5: a630a116c30f5b832cdaf64f195ba19c
+        size: 1773
     outs:
-    - path: data/group_qrcode_links.csv
-      hash: md5
-      md5: cc3e74beca5d8a633c392a2f5b9afe73
-      size: 16158
-    - path: img/QRCode_InterGroupLinks
-      hash: md5
-      md5: b3709e93e2674afc50d68fb2afe94f07.dir
-      size: 111084
-      nfiles: 64
+      - path: data/group_qrcode_links.csv
+        hash: md5
+        md5: cc3e74beca5d8a633c392a2f5b9afe73
+        size: 16158
+      - path: img/QRCode_InterGroupLinks
+        hash: md5
+        md5: b3709e93e2674afc50d68fb2afe94f07.dir
+        size: 111084
+        nfiles: 64
   typst_qrcode_group:
     cmd: typst compile group_score_fill.typ
     deps:
-    - path: data/group_qrcode_links.csv
-      hash: md5
-      md5: cc3e74beca5d8a633c392a2f5b9afe73
-      size: 16158
-    - path: group_score_fill.typ
-      hash: md5
-      md5: 6404a6792b822675714bcda8516d06ac
-      size: 2439
+      - path: data/group_qrcode_links.csv
+        hash: md5
+        md5: cc3e74beca5d8a633c392a2f5b9afe73
+        size: 16158
+      - path: group_score_fill.typ
+        hash: md5
+        md5: 6404a6792b822675714bcda8516d06ac
+        size: 2439
+  update_quiz_score:
+    cmd: julia --project=@. scripts/update_quiz_score.jl Python_for_beginners_5-8
+    params:
+      params.yaml:
+        this_test: Python_for_beginners_5-8
+    outs:
+      - path: data/quiz_score.csv
+        hash: md5
+        md5: 7469015b04aa9e444446938766ad580b
+        size: 3207

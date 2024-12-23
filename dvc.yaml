@@ -28,3 +28,21 @@ stages:
     deps:
       - data/group_qrcode_links.csv
       - group_score_fill.typ
+  update_quiz_score:
+    # https://dvc.org/doc/user-guide/project-structure/dvcyaml-files#templating
+    # dvc stage add -n update_quiz_score -p this_test -o data/quiz_score.csv julia --project=@. scripts/update_quiz_score.jl
+    cmd: julia --project=@. scripts/update_quiz_score.jl ${this_test}
+    params:
+      - this_test
+    outs:
+      - data/quiz_score.csv:
+          persist: true
+  send_quiz_score:
+    # dvc stage add -n send_quiz_score -p this_test -d data/quiz_score.csv julia --project=@. scripts/send_quiz_score.jl
+    # KEYNOTE: issent.csv will be modified.
+    # CHECKPOINT: Set params.yaml, enable `do_send_email` and run `dvc repro`
+    cmd: julia --project=@. scripts/send_quiz_score.jl ${this_test}
+    deps:
+      - data/quiz_score.csv
+    params:
+      - this_test

@@ -1,23 +1,16 @@
-using JSON, OkReadGSheet, DataFrames, CSV, Chain, SMTPClient, HypertextLiteral
+using JSON, DataFrames, CSV, Chain, SMTPClient, HypertextLiteral
 using Dates
-using OkReadGSheet
 using BasicProgramming2024
 
 # SETME:
 do_send_email = false
-this_test = "Python_for_beginners_5-8"
-
 secrets = JSON.parsefile("local/secrets.json")
 
+# ARGS = ["Python_for_beginners_5-8", ]
+this_test = ARGS[1]
 keepthistest = :Test => x -> (x .== this_test)
 
-score_quiz = @chain readgsheet(secrets["score_quiz"]) begin
-    quizscoreprep!
-    filter!(:MyEmail => x -> (x in secrets["filler"]), _) # verify who fill the form.
-    filter!(keepthistest, _)
-end
-
-
+score_quiz = CSV.read("data/quiz_score.csv", DataFrame)
 issent_ref = CSV.read("data/issent.csv", DataFrame)
 issent_this = subset(issent_ref, keepthistest; view=true)
 
@@ -101,7 +94,7 @@ for row in eachrow(score_quiz)
     if !only(id_sent) && do_send_email
         push!(recipients, contact[row.StudentID])
         in_rcpt_list = true
-    end
+    end # only when `id_sent[1]` is `false` (not sent yet), this student will be push into the recipient list.
 
     if isempty(recipients)
         push!(recipients, "tsung.hsi@g.ncu.edu.tw")
@@ -124,10 +117,8 @@ for row in eachrow(score_quiz)
 
     resp = send(url, rcpt, from, body, opt)
     if do_send_email && in_rcpt_list
-        id_sent[1] = true
+        id_sent[1] = true # Noted that `id_sent` is a view that linked to `issent_ref`
         CSV.write("data/issent.csv", issent_ref)
     end
 
 end
-
-CSV.write("data/quiz_score.csv", score_quiz, header=false, append=true)
