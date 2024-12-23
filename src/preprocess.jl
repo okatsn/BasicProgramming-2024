@@ -13,3 +13,12 @@ function quizscoreprep!(df)
         select!(Not(r"[\u4e00-\u9fff]")) # remove all the columns with ZH characters
     end
 end
+function innerscoreprep!(df)
+    @chain df begin
+        transform!(
+            gformheaders_innergroupscore...
+        )
+        convdatetime!
+        select!(Not(r"[\u4e00-\u9fff]")) # remove all the columns with ZH characters
+    end
+end

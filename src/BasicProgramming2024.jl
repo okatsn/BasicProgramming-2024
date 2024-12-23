@@ -34,4 +34,16 @@ const gformheaders_quizscore = (
     "備註" => :Note,
     "時間戳記" => :Time
 )
+
+const gformheaders_innergroupscore = (
+    "時間戳記" => ":Time",
+    "電子郵件地址" => ":TheirEmail",
+    "我的組員1" => "Member_1",
+    "組員1的表現" => "Score_1",
+    "我的組員2" => "Member_2",
+    "組員2的表現" => "Score_2",
+    "我的組員3" => "Member_3",
+    "組員3的表現" => "Score_3",
+    "附註" => ":Note",
+)
 end
