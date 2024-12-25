@@ -13,6 +13,7 @@ score_quiz = @chain readgsheet(secrets["score_quiz"]) begin
     quizscoreprep!
     filter!(:MyEmail => x -> (x in secrets["filler"]), _) # verify who fill the form.
     filter!(keepthistest, _)
+    groupby([:Name, :StudentID])
     takelast
 end
 
