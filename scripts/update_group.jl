@@ -7,6 +7,13 @@ using BasicProgramming2024
 secrets = JSON.parsefile("local/secrets.json")
 student_information = CSV.read("student_information.csv", DataFrame)
 
+gid_gmails = @chain student_information begin
+    groupby(:GroupID)
+    combine(:gmail => Ref => :gmails)
+end
+
+gid_gmails = gid_gmails |> (x -> Dict(x.GroupID .=> x.gmails))
+
 gmail_name = Dict(student_information.gmail .=> student_information.Name)
 gmail_gid = Dict(student_information.gmail .=> student_information.GroupID)
 
