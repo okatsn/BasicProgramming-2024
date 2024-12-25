@@ -85,8 +85,10 @@ inner_score_final = @chain inner_score_stacked begin
     transform(:name => ByRow(x -> name_gmail[x]) => :gmail)
     transform(:gmail => ByRow(x -> gmail_notme[x]) => :NotMe)
     transform([:NotMe, :scored_by_Ref] => ByRow((n, s) -> setdiff(n, Set(s))) => :who_did_not_score)
+    select(:name, :gmail, :score_mean, :who_did_not_score)
 end
 
+CSV.write("data/innergroup_score.csv", inner_score_final)
 
 inter_score_final = @chain inter_score begin
     groupby([:ReplierEmail, :Group])
@@ -95,4 +97,7 @@ inter_score_final = @chain inter_score begin
     groupby(:GID)
     combine(:Score => mean => :score_mean, :ReplierEmail => Ref, nrow)
     transform([:GID, :ReplierEmail_Ref] => ByRow((i, r) -> setdiff(gid_notthisgroup[i], r)) => :who_did_not_score)
+    select(:GID, :score_mean, :who_did_not_score)
 end
+
+CSV.write("data/intergroup_score.csv", inter_score_final)
