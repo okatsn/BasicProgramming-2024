@@ -15,20 +15,22 @@ gmail_gid = Dict(student_information.gmail .=> student_information.GroupID)
 inner_score0 = readgsheet(secrets["score_innerGroup"])
 inner_score = @chain inner_score0 begin
     innerscoreprep!
-    transform!(Cols(r"Member_\d+") => ByRow((args...) -> Set(args)) => :NotMe)
+    transform!(:ReplierEmail => ByRow(x -> gmail_gid[x]) => :GID)
+    transform!(:GID => ByRow(i -> gid_gmails[i]) => :AllMembers)
+    transform!([:ReplierEmail, :AllMembers] => ByRow((r, a) -> Set(setdiff(a, [r]))) => :NotMe) # noted that the argument order in setdiff is critical.
 
     # Authentication
-    filter!(:TheirEmail => in(student_information.gmail), _) # remove alien replier
-    filter!(AsTable(:) => nt -> !in(gmail_name[nt.TheirEmail], nt.NotMe), _) # replier cannot score him/herself
+    filter!(:ReplierEmail => in(student_information.gmail), _) # remove alien replier
+    filter!(AsTable(:) => nt -> !in(nt.ReplierEmail, nt.NotMe), _) # replier cannot score him/herself
 end
 
 inter_score0 = readgsheet(secrets["score_interGroup"])
 inter_score = @chain inter_score0 begin
     interscoreprep!
-    transform!(:TheirEmail => ByRow(x -> gmail_gid[x]) => :GID)
+    transform!(:ReplierEmail => ByRow(x -> gmail_gid[x]) => :GID)
 
     # Authentication
-    filter!(:TheirEmail => in(student_information.gmail), _) # remove alien replier
+    filter!(:ReplierEmail => in(student_information.gmail), _) # remove alien replier
     filter!(AsTable(:) => (nt -> !isequal(nt.GID, nt.Group) && length(nt.Group) == 1), _) # replier's group (GID) cannot be the score's group; additional check of nt.Group's string length.
 end
 
@@ -46,7 +48,7 @@ inner_score_stacked = @chain inner_score begin
     stack(Cols(r"^Score_"); variable_name=:score_tag, value_name=:score)
     transform(:score_tag => ByRow(x -> parse(Int, match(r"\d+", x).match)) => :MemberID)
     transform([:Members, :MemberID] => ByRow((m, i) -> m[i]) => :name)
-    select(:Time, :name, :score, :TheirEmail => :scored_by)
+    select(:Time, :name, :score, :ReplierEmail => :scored_by)
     groupby([:name, :scored_by])
     takelast
 end

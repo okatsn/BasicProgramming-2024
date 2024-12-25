@@ -37,7 +37,7 @@ const gformheaders_quizscore = (
 
 const gformheaders_innergroupscore = (
     "時間戳記" => :Time,
-    "電子郵件地址" => :TheirEmail,
+    "電子郵件地址" => :ReplierEmail,
     "我的組員1" => :Member_1,
     "組員1的表現" => :Score_1,
     "我的組員2" => :Member_2,
@@ -49,7 +49,7 @@ const gformheaders_innergroupscore = (
 
 const gformheaders_intergroupscore = (
     "時間戳記" => :Time,
-    "電子郵件地址" => :TheirEmail,
+    "電子郵件地址" => :ReplierEmail,
     "報告組別" => :Group,
     "報告與內容綜合表現" => :Score,
     "附註" => :Note,
