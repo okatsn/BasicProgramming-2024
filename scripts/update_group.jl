@@ -19,6 +19,14 @@ gid_gmails = gid_gmails |> (x -> Dict(x.GroupID .=> x.gmails))
     transform!([:gmail, :AllMembers] => ByRow((r, a) -> Set(setdiff(a, [r]))) => :NotMe) # noted that the argument order in setdiff is critical.
 end
 
+gid_notthisgroup = @chain student_information begin
+    groupby(:GroupID)
+    combine(:gmail => Ref) # gmails of each group
+    transform(:gmail_Ref => ByRow(gr -> setdiff(student_information.gmail, gr)) => :not_this_group)
+end
+
+gid_notthisgroup = Dict(gid_notthisgroup.GroupID .=> gid_notthisgroup.not_this_group)
+
 gmail_notme = Dict(student_information.gmail .=> student_information.NotMe)
 gmail_name = Dict(student_information.gmail .=> student_information.Name)
 name_gmail = Dict(student_information.Name .=> student_information.gmail)
@@ -51,7 +59,7 @@ if nrow(inner_score) != nrow(inner_score0)
     @warn "Some reply do not pass authentication (Inner score)."
 end
 if nrow(inter_score) != nrow(inter_score0)
-    @warn "Some reply do not pass authentication (Inner score)."
+    @warn "Some reply do not pass authentication (Inter score)."
 end
 
 
@@ -77,4 +85,14 @@ inner_score_final = @chain inner_score_stacked begin
     transform(:name => ByRow(x -> name_gmail[x]) => :gmail)
     transform(:gmail => ByRow(x -> gmail_notme[x]) => :NotMe)
     transform([:NotMe, :scored_by_Ref] => ByRow((n, s) -> setdiff(n, Set(s))) => :who_did_not_score)
+end
+
+
+inter_score_final = @chain inter_score begin
+    groupby([:ReplierEmail, :Group])
+    takelast
+    transform(:Group => :GID; renamecols=false)
+    groupby(:GID)
+    combine(:Score => mean => :score_mean, :ReplierEmail => Ref, nrow)
+    transform([:GID, :ReplierEmail_Ref] => ByRow((i, r) -> setdiff(gid_notthisgroup[i], r)) => :who_did_not_score)
 end
