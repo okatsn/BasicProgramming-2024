@@ -46,3 +46,8 @@ stages:
       - data/quiz_score.csv
     params:
       - this_test
+  update_group_scores:
+    cmd: julia --project=@. scripts/update_group.jl
+    outs:
+      - data/innergroup_score.csv
+      - data/intergroup_score.csv
