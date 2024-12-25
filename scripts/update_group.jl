@@ -2,7 +2,7 @@ using JSON, OkReadGSheet, DataFrames, CSV, Chain
 using Dates
 using OkReadGSheet
 using BasicProgramming2024
-
+using Statistics
 
 secrets = JSON.parsefile("local/secrets.json")
 student_information = CSV.read("student_information.csv", DataFrame)
@@ -69,4 +69,12 @@ end
 
 if nrow(inner_score_stacked) != 3 * nrow(inner_score)
     @warn "Some replies of the same replier that has earlier time was discarded."
+end
+
+inner_score_final = @chain inner_score_stacked begin
+    groupby(:name)
+    combine(:score => mean, :scored_by => Ref)
+    transform(:name => ByRow(x -> name_gmail[x]) => :gmail)
+    transform(:gmail => ByRow(x -> gmail_notme[x]) => :NotMe)
+    transform([:NotMe, :scored_by_Ref] => ByRow((n, s) -> setdiff(n, Set(s))) => :who_did_not_score)
 end
