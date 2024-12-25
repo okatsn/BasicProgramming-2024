@@ -51,3 +51,8 @@ stages:
     outs:
       - data/innergroup_score.csv
       - data/intergroup_score.csv
+  send_group_score:
+    cmd: julia --project=@. scripts/send_group_score.jl
+    deps:
+      - data/innergroup_score.csv
+      - data/intergroup_score.csv
