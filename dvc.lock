@@ -89,3 +89,14 @@ stages:
       hash: md5
       md5: fa5d89f907c28059af8e988dd299339c
       size: 95
+  send_group_score:
+    cmd: julia --project=@. scripts/send_group_score.jl
+    deps:
+    - path: data/innergroup_score.csv
+      hash: md5
+      md5: 3dd3db1303b7b7f149b25ec409f0c12f
+      size: 558
+    - path: data/intergroup_score.csv
+      hash: md5
+      md5: fa5d89f907c28059af8e988dd299339c
+      size: 95
