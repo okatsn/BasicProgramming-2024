@@ -59,44 +59,39 @@ stages:
       md5: 6404a6792b822675714bcda8516d06ac
       size: 2439
   update_quiz_score:
-    cmd: julia --project=@. scripts/update_quiz_score.jl Python_for_beginners_9-12
+    cmd: julia --project=@. scripts/update_quiz_score.jl Python_for_beginners_1-4
     params:
       params.yaml:
-        this_test: Python_for_beginners_9-12
-    outs:
-    - path: data/quiz_score.csv
-      hash: md5
-      md5: 0a20c2fab7c2cafe16d1dae8f86cf44c
-      size: 6503
+        this_test: Python_for_beginners_1-4
   send_quiz_score:
-    cmd: julia --project=@. scripts/send_quiz_score.jl Python_for_beginners_9-12
+    cmd: julia --project=@. scripts/send_quiz_score.jl Python_for_beginners_1-4
     deps:
     - path: data/quiz_score.csv
       hash: md5
-      md5: 0a20c2fab7c2cafe16d1dae8f86cf44c
-      size: 6503
+      md5: 5216967f26b5c1e172a28d3af8975d6d
+      size: 1647
     params:
       params.yaml:
-        this_test: Python_for_beginners_9-12
+        this_test: Python_for_beginners_1-4
   update_group_scores:
     cmd: julia --project=@. scripts/update_group.jl
     outs:
     - path: data/innergroup_score.csv
       hash: md5
-      md5: 3dd3db1303b7b7f149b25ec409f0c12f
-      size: 558
+      md5: a2788d95151d97692dd9216dadbca834
+      size: 1048
     - path: data/intergroup_score.csv
       hash: md5
-      md5: fa5d89f907c28059af8e988dd299339c
-      size: 95
+      md5: b54b0a593a466f32600c36102e82621b
+      size: 182
   send_group_score:
     cmd: julia --project=@. scripts/send_group_score.jl
     deps:
     - path: data/innergroup_score.csv
       hash: md5
-      md5: 3dd3db1303b7b7f149b25ec409f0c12f
-      size: 558
+      md5: a2788d95151d97692dd9216dadbca834
+      size: 1048
     - path: data/intergroup_score.csv
       hash: md5
-      md5: fa5d89f907c28059af8e988dd299339c
-      size: 95
+      md5: b54b0a593a466f32600c36102e82621b
+      size: 182
