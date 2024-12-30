@@ -13,12 +13,14 @@
 // #let KEY1(term) = text()[#term]
 #let KEY1(term) = text(fill: rgb("990000"), weight: "bold", term)
 
-#set text( // Set main text: https://typst.app/docs/reference/text/text/
+#set text(
+  // Set main text: https://typst.app/docs/reference/text/text/
   font: "New Computer Modern",
-  size: 10pt
+  size: 10pt,
 )
 
-#set page( // Set page: https://typst.app/docs/reference/layout/page/
+#set page(
+  // Set page: https://typst.app/docs/reference/layout/page/
   paper: "a4",
   margin: (x: 1.5cm, y: 2.1cm),
   header: align(right)[
@@ -27,7 +29,8 @@
   numbering: "1", // numbering the page
 )
 
-#set par( // Set paragraph: https://typst.app/docs/reference/layout/par/
+#set par(
+  // Set paragraph: https://typst.app/docs/reference/layout/par/
   justify: true, // Hyphenation will be enabled for justified paragraphs
   leading: 0.52em, // The spacing between lines
 )
@@ -106,9 +109,10 @@
 - #KEY1[測驗中不能開啟測驗頁面 (@test_page) 以外的分頁或視窗]。以下為範例但不限於：
   - 不能使用Google、ChatGPT尋找答案
   - 測驗開始後，不能再回去課程教學頁面。
-- #KEY1[考試期間不得在教室從事任何考試活動以外的行為] (滑手機、看書或任何紙本文件、聊天等)。
+- #KEY1[考試期間不得在教室內或外從事任何考試活動以外的行為] (滑手機、看書或任何紙本文件、聊天等)。
 - #KEY2[測驗頁面開啟後，一離座就算考試結束]。請在上機前上完廁所。
 - 因緊急與不可抗力事件無法參加或完成測驗，得視情況安排補考。
+- 無正當理由遲到視情況扣分。
 - 遲到 15 分鐘以上算缺考。
 
 == 作弊與違規 <test_cheat>
