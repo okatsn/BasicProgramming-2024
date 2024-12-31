@@ -33,6 +33,14 @@ innerscore(name) = Dict(score_inner.Name .=> score_inner.score_mean)[name]
 score_quiz = CSV.read("data/quiz_score.csv", DataFrame)
 quizscore(test, sid) = groupby(score_quiz, [:Test, :StudentID])[(Test=test, StudentID=sid)]
 quizdetail(sid) = groupby(score_quiz, [:StudentID])[(; StudentID=sid)]
+selectquizdetail(sid) = select(
+    quizdetail(sid),
+    :Test => "測驗名稱",
+    :QuizNum_A => "測驗一",
+    :Score_A => "分數一",
+    :QuizNum_B => "測驗二",
+    :Score_B => "分數二"
+)
 
 # quizscore("Python_for_beginners_13-16", 110605002)
 # quizdetail(110605002) |> render_table
@@ -69,7 +77,7 @@ for row in eachrow(student_information)
                 <br>
                 以下是您本學期的成績一覽：
                 <p>
-                    $(render_table(quizdetail(row.StudentID)))
+                    $(render_table(selectquizdetail(row.StudentID)))
                 </p>
 
                 <p>
