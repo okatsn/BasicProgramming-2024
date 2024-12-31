@@ -153,10 +153,11 @@ for row in eachrow(student_information)
     if do_send_email
         push!(recipients, contact[row.StudentID])
         in_rcpt_list = true
+        cc = ["<chienchih.chen@g.ncu.edu.tw>"]
     else
         push!(recipients, "tsung.hsi@g.ncu.edu.tw")
+        cc = ["<okatsn@gmail.com>"]
     end # only when not sent yet, this student will be push into the recipient list.
-
     rcpt = to = ["<$(strip(recipient))>" for recipient in recipients]
 
     io = IOBuffer()
@@ -167,10 +168,11 @@ for row in eachrow(student_information)
         to,
         from,
         subject,
-        message
+        message;
+        cc
         # ; attachments=["Slide_TrafficInfo/Fig_publicTransport.png", "Slide_TrafficInfo/greenbreeze_map.jpg"]
     ) # cc, replyto)
     # Preview the body: String(take!(body))
 
-    resp = send(url, rcpt, from, body, opt)
+    resp = send(url, vcat(rcpt, cc), from, body, opt)
 end
