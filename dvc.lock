@@ -145,16 +145,20 @@ stages:
       hash: md5
       md5: af1581b749ebe4ea969ca2ed9add521c
       size: 148
+    - path: data/plan_score_by_ccc.csv
+      hash: md5
+      md5: 8a1ec50577e358b2768b25158362466a
+      size: 29
     - path: data/quiz_score.csv
       hash: md5
       md5: 81b73bdfa9cb4f89e1591b98a11c8d14
       size: 6642
     - path: scripts/summarize_scores.jl
       hash: md5
-      md5: c1d20ada0f4737d2e225006583f54323
-      size: 2011
+      md5: e40629a4a6b8fed201ad338258b46383
+      size: 2247
     outs:
-    - path: data/score_ccc.csv
+    - path: data/final_score.csv
       hash: md5
-      md5: 002d6a80215622c28dedab6636213096
-      size: 1330
+      md5: 1b5e9e018e16ee064484613f20207b94
+      size: 1404
