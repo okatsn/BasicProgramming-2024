@@ -9,6 +9,9 @@ export quizscoreprep!, innerscoreprep!, interscoreprep!
 include("takelast.jl")
 export takelast
 
+include("parsemeta.jl")
+export evalmetaparse
+
 # # Constants
 
 # Titles for test names
