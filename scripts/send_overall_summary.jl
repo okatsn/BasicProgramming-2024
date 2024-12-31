@@ -42,6 +42,8 @@ selectquizdetail(sid) = select(
     :Score_B => "分數二"
 )
 
+score_final = CSV.read("data/score_ccc.csv", DataFrame)
+finalscore(sid) = Dict(score_final.var"學號" .=> score_final.var"總分")[sid]
 # quizscore("Python_for_beginners_13-16", 110605002)
 # quizdetail(110605002) |> render_table
 # row = eachrow(student_information)[4]
@@ -90,11 +92,15 @@ for row in eachrow(student_information)
                 <p>
                 這是您的組員對您的評分(原始平均)：
                     $(innerscore(row.Name))
-
                 評語：
                     $(innernote(row.Name))
                 </p>
 
+                <p>
+                學期總分 (陳建志老師的部分滿分 50)：
+                $(finalscore(row.StudentID))
+
+                </p>
                 <br>
                 若有任何疑問，請回信 $sender 或至科一館 S113 找助教。
             </p>
