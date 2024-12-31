@@ -127,7 +127,9 @@ for row in eachrow(student_information)
 
                 <p>
                 這是您的組員對您的評分(滿分10分)：
-                    $(innerscore(row.Name))
+                <ul>
+                    <li> $(innerscore(row.Name)) </li>
+                </ul>
                 <br>
                 來自組員的話：
                     $(render_list(innernote(row.Name)))
