@@ -13,7 +13,7 @@ note_inner = @chain CSV.read("data/innergroup_with_note.csv", DataFrame) begin
     groupby(:Name)
     combine(:Note => (x -> join(x, "\n- ")) => :note_summary)
 end
-innernote(name) = Dict(note_inner.Name .=> note_inner.note_summary)[name]
+innernote(name) = get(Dict(note_inner.Name .=> note_inner.note_summary), name, "無")
 
 
 note_inter = @chain CSV.read("data/intergroup_with_note.csv", DataFrame) begin
@@ -21,7 +21,7 @@ note_inter = @chain CSV.read("data/intergroup_with_note.csv", DataFrame) begin
     groupby(:Group)
     combine(:Note => (x -> join(x, "\n- ")) => :note_summary)
 end
-internote(gid) = Dict(note_inter.Group .=> note_inter.note_summary)[gid]
+internote(gid) = get(Dict(note_inter.Group .=> note_inter.note_summary), gid, "無")
 
 
 score_inter = CSV.read("data/intergroup_score.csv", DataFrame)
@@ -44,7 +44,7 @@ selectquizdetail(sid) = select(
 
 # quizscore("Python_for_beginners_13-16", 110605002)
 # quizdetail(110605002) |> render_table
-# row = eachrow(student_information)[1]
+# row = eachrow(student_information)[4]
 for row in eachrow(student_information)
     msg0 = @htl("""
     <html>
@@ -81,9 +81,18 @@ for row in eachrow(student_information)
                 </p>
 
                 <p>
-                $keynote1
-                <br>
-                $keynote2
+                這是您的組別報告的得分：
+                    $(interscore(row.GroupID))
+                評語：
+                    $(internote(row.GroupID))
+                </p>
+
+                <p>
+                這是您的組員對您的評分(原始平均)：
+                    $(innerscore(row.Name))
+
+                評語：
+                    $(innernote(row.Name))
                 </p>
 
                 <br>
