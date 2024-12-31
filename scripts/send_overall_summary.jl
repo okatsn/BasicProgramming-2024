@@ -4,8 +4,9 @@ using OkReadGSheet
 using BasicProgramming2024
 using Statistics
 using OkHypertextTools
+using SMTPClient, HypertextLiteral
 
-do_send_email = false
+do_send_email = false # SETME
 student_information = CSV.read("student_information.csv", DataFrame)
 
 note_inner = @chain CSV.read("data/innergroup_with_note.csv", DataFrame) begin
@@ -46,6 +47,32 @@ score_final = CSV.read("data/score_ccc.csv", DataFrame)
 finalscore(sid) = Dict(score_final.var"學號" .=> score_final.var"總分")[sid]
 # quizscore("Python_for_beginners_13-16", 110605002)
 # quizdetail(110605002) |> render_table
+
+
+
+
+
+
+
+
+# # Send Email After the scores are all registered.
+secrets = JSON.parsefile("local/secrets.json")
+sender_key = secrets["sender_key"]
+sender = secrets["sender"]
+
+url = "smtps://smtp.gmail.com:465"
+from = "<$sender>"
+
+opt = SendOptions(
+    isSSL=true,
+    username=sender,
+    passwd=sender_key,
+)
+
+
+
+
+
 # row = eachrow(student_information)[1]
 for row in eachrow(student_information)
     msg0 = @htl("""
@@ -107,4 +134,31 @@ for row in eachrow(student_information)
         </body>
     </html>
     """)
+
+
+    recipients = []
+    in_rcpt_list = false
+    if do_send_email
+        push!(recipients, contact[row.StudentID])
+        in_rcpt_list = true
+    else
+        push!(recipients, "tsung.hsi@g.ncu.edu.tw")
+    end # only when not sent yet, this student will be push into the recipient list.
+
+    rcpt = to = ["<$(strip(recipient))>" for recipient in recipients]
+
+    io = IOBuffer()
+    print(io, msg0)
+
+    message = get_mime_msg(HTML(String(take!(io)))) # do this if message is HTML
+    body = get_body(
+        to,
+        from,
+        subject,
+        message
+        # ; attachments=["Slide_TrafficInfo/Fig_publicTransport.png", "Slide_TrafficInfo/greenbreeze_map.jpg"]
+    ) # cc, replyto)
+    # Preview the body: String(take!(body))
+
+    resp = send(url, rcpt, from, body, opt)
 end
