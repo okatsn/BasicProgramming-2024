@@ -1,3 +1,7 @@
+# KEYNOTE:
+# - This script is not in dvc pipeline. Run it after `dvc repro` (update all scores).
+# - This script load and modify `issent.csv`.
+# - `issent.csv` should be generated at the first place. See `generate_issent.jl`.
 using JSON, DataFrames, CSV, Chain, SMTPClient, HypertextLiteral
 using Dates
 using BasicProgramming2024
@@ -7,13 +11,12 @@ do_send_email = false
 secrets = JSON.parsefile("local/secrets.json")
 
 # ARGS = ["Python_for_beginners_5-8", ]
-this_test = ARGS[1]
-keepthistest = :Test => x -> (x .== this_test)
 
 score_quiz = CSV.read("data/quiz_score.csv", DataFrame)
 issent_ref = CSV.read("data/issent.csv", DataFrame)
-issent_this = subset(issent_ref, keepthistest; view=true)
 
+df = rightjoin(score_quiz, issent_ref, on=[:StudentID, :Test], order=:right)
+# The row indices is stick to the `issent_ref` (`order=:right`).
 
 sender_key = secrets["sender_key"]
 sender = secrets["sender"]
@@ -33,9 +36,11 @@ opt = SendOptions(
     passwd=sender_key,
 )
 
-# row = eachrow(score_quiz) |> first
-for row in eachrow(score_quiz)
-    id_sent = subset(issent_this, :StudentID => (x -> x .== row.StudentID); view=true).issent
+# row = eachrow(df) |> first
+for (i, row) in enumerate(eachrow(df))
+    if ismissing(row.Name)
+        continue
+    end # Since `df` is `rightjoin`ed, its row is the same as `issent_ref`, and there might be missing values in `:Name` (as well as any of the scores). The reason of not using `dropmissing!` is to ensure the index `i` consistent with `issent_ref`.
     subject = replace(row.Test, "_" => " ") * " 成績摘要"
     keynote1 = ifelse(ismissing(row.Note), "", "**備註**:$(row.Note)")
     keynote2 = ifelse(ismissing(row.Violate), "", "**違規註記**:$(row.Violate)")
@@ -91,14 +96,12 @@ for row in eachrow(score_quiz)
 
     recipients = []
     in_rcpt_list = false
-    if !only(id_sent) && do_send_email
+    if !row.issent && do_send_email
         push!(recipients, contact[row.StudentID])
         in_rcpt_list = true
-    end # only when `id_sent[1]` is `false` (not sent yet), this student will be push into the recipient list.
-
-    if isempty(recipients)
+    else
         push!(recipients, "tsung.hsi@g.ncu.edu.tw")
-    end # Send otherwise mail to the sender itself.
+    end # only when not sent yet, this student will be push into the recipient list.
 
     rcpt = to = ["<$(strip(recipient))>" for recipient in recipients]
 
@@ -116,9 +119,7 @@ for row in eachrow(score_quiz)
     # Preview the body: String(take!(body))
 
     resp = send(url, rcpt, from, body, opt)
-    if do_send_email && in_rcpt_list
-        id_sent[1] = true # Noted that `id_sent` is a view that linked to `issent_ref`
-        CSV.write("data/issent.csv", issent_ref)
-    end
+    issent_ref.issent[i] = true
+    CSV.write("data/issent.csv", issent_ref)
 
 end
