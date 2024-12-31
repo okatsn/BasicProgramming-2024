@@ -92,19 +92,19 @@ stages:
       size: 148
     - path: data/intergroup_with_note.csv
       hash: md5
-      md5: e98269db25bad5f76cd89a24225d3bdb
-      size: 3264
+      md5: 249d202c7464f9cd9f1eec926edb321e
+      size: 3267
   send_group_score:
     cmd: julia --project=@. scripts/send_group_score.jl
     deps:
-    - path: data/innergroup_score.csv
+    - path: data/innergroup_with_note.csv
       hash: md5
-      md5: 5e9d121533bc0a6a4a06abc62d45cf6c
-      size: 1048
-    - path: data/intergroup_score.csv
+      md5: 5364d3e254b532ea09c8e0a4bded35bd
+      size: 3297
+    - path: data/intergroup_with_note.csv
       hash: md5
-      md5: af1581b749ebe4ea969ca2ed9add521c
-      size: 148
+      md5: 249d202c7464f9cd9f1eec926edb321e
+      size: 3267
   summary_scores:
     cmd: julia --project=@. scripts/summarize_scores.jl
     deps:

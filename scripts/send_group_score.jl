@@ -1,8 +1,21 @@
-using DataFrames, CSV, Chain
+using JSON, OkReadGSheet, DataFrames, CSV, Chain
+using Dates
+using OkReadGSheet
+using BasicProgramming2024
+using Statistics
 
-inner = @chain CSV.read("data/intergroup_score.csv", DataFrame) begin
-    transform(:who_did_not_score => ByRow(x -> eval(Meta.parse(x))); renamecols=false)
+secrets = JSON.parsefile("local/secrets.json")
+
+df = @chain CSV.read("data/innergroup_with_note.csv", DataFrame) begin
+    dropmissing(:Note)
+    groupby(:Name)
+    combine(:Note => (x -> join(x, "\n- ")))
 end
-inter = @chain CSV.read("data/innergroup_score.csv", DataFrame) begin
-    transform(:who_did_not_score => ByRow(x -> eval(Meta.parse(x))); renamecols=false)
+
+
+
+df2 = @chain CSV.read("data/intergroup_with_note.csv", DataFrame) begin
+    dropmissing(:Note)
+    groupby(:Group)
+    combine(:Note => (x -> join(x, "\n- ")))
 end
