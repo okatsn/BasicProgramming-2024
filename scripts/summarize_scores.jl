@@ -16,19 +16,31 @@ summary_of_quiz = @chain df_quiz begin
     # select(:Name, )
 end
 
-@chain leftjoin(student_information, df_inner; on=[:Name, :gmail]) begin
-    select(Not(:who_did_not_score))
+final_sheet = @chain leftjoin(student_information, select(df_inner, Not(:who_did_not_score)); on=[:Name, :gmail]) begin
     sort(:Number)
     transform(:score_mean => ByRow(x -> x * BP.inner_score_weight); renamecols=false)
-    rename(:score_mean => "組內評分")
+    rename(:score_mean => :score_mean_inner)
 
-    leftjoin(df_inter; on=:GroupID)
+    leftjoin(select(df_inter, Not(:who_did_not_score)); on=:GroupID)
     transform(:score_mean => ByRow(x -> x * BP.inter_score_weight); renamecols=false)
-    rename(:score_mean => "組間互評")
-    select(Not(:score_mean, :who_did_not_score))
+    rename(:score_mean => :score_mean_inter)
 
     leftjoin(summary_of_quiz; on=:Name)
-    transform(:score_mean => ByRow(x => x * BP.quiz_score_weight); renamecols=false)
-    rename(:score_mean => "上機測驗")
+    transform(:score_mean => ByRow(x -> x * BP.quiz_score_weight); renamecols=false)
+    rename(:score_mean => :score_mean_quiz)
 
+    transform(AsTable([:score_mean_quiz, :score_mean_inner, :score_mean_inter]) => ByRow(sum) => :score_overall)
+
+
+    select(:Number, :Department, :StudentID, :Name, :Gender, :score_mean_quiz, :score_mean_inner, :score_mean_inter, :score_overall)
+    rename(:score_mean_inner => "組內評分")
+    rename(:score_mean_inter => "組間互評")
+    rename(:score_mean_quiz => "上機測驗")
+    rename(:score_overall => "總分")
+    rename(:Number => "學號")
+    rename(:Name => "姓名")
+    rename(:Gender => "性別")
+    rename(:Department => "系所別")
 end
+
+CSV.write("data/score_ccc.csv", final_sheet)

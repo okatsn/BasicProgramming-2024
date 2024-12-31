@@ -50,3 +50,5 @@ stages:
       - data/intergroup_score.csv
       - data/innergroup_score.csv
       - data/quiz_score.csv
+    outs:
+      - data/score_ccc.csv
