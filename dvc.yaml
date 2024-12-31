@@ -51,21 +51,13 @@ stages:
       - data/intergroup_score.csv
       - data/intergroup_with_note.csv
     always_changed: true
-  # send_overall_summary:
-  #   cmd: julia --project=@. scripts/send_overall_summary.jl
-  #   deps:
-  #     - data/innergroup_with_note.csv
-  #     - data/intergroup_with_note.csv
-  #     - data/intergroup_score.csv
-  #     - data/innergroup_score.csv
-  #     - data/quiz_score.csv
-  #     - data/score_ccc.csv
   summary_scores:
     cmd: julia --project=@. scripts/summarize_scores.jl
     deps:
       - data/intergroup_score.csv
       - data/innergroup_score.csv
       - data/quiz_score.csv
+      - data/plan_score_by_ccc.csv
       - scripts/summarize_scores.jl
     outs:
-      - data/score_ccc.csv
+      - data/final_score.csv

@@ -43,7 +43,7 @@ selectquizdetail(sid) = select(
     :Score_B => "分數二"
 )
 
-score_final = CSV.read("data/score_ccc.csv", DataFrame)
+score_final = CSV.read("data/final_score.csv", DataFrame)
 finalscore(sid) = Dict(score_final.var"學號" .=> score_final.var"總分")[sid]
 # quizscore("Python_for_beginners_13-16", 110605002)
 # quizdetail(110605002) |> render_table
