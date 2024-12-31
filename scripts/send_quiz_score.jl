@@ -10,7 +10,12 @@ secrets = JSON.parsefile("local/secrets.json")
 this_test = ARGS[1]
 keepthistest = :Test => x -> (x .== this_test)
 
-score_quiz = CSV.read("data/quiz_score.csv", DataFrame)
+score_quiz0 = CSV.read("data/quiz_score.csv", DataFrame)
+
+score_quiz = @chain score_quiz0 begin
+    filter(keepthistest, _)
+end
+
 issent_ref = CSV.read("data/issent.csv", DataFrame)
 issent_this = subset(issent_ref, keepthistest; view=true)
 
@@ -94,11 +99,9 @@ for row in eachrow(score_quiz)
     if !only(id_sent) && do_send_email
         push!(recipients, contact[row.StudentID])
         in_rcpt_list = true
-    end # only when `id_sent[1]` is `false` (not sent yet), this student will be push into the recipient list.
-
-    if isempty(recipients)
+    else
         push!(recipients, "tsung.hsi@g.ncu.edu.tw")
-    end # Send otherwise mail to the sender itself.
+    end # only when `id_sent[1]` is `false` (not sent yet), this student will be push into the recipient list.
 
     rcpt = to = ["<$(strip(recipient))>" for recipient in recipients]
 
