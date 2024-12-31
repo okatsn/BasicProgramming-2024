@@ -3,6 +3,7 @@ using Dates
 using OkReadGSheet
 using BasicProgramming2024
 using Statistics
+using OkHypertextTools
 
 do_send_email = false
 student_information = CSV.read("student_information.csv", DataFrame)
@@ -34,7 +35,7 @@ quizscore(test, sid) = groupby(score_quiz, [:Test, :StudentID])[(Test=test, Stud
 quizdetail(sid) = groupby(score_quiz, [:StudentID])[(; StudentID=sid)]
 
 # quizscore("Python_for_beginners_13-16", 110605002)
-# quizdetail(110605002)
+# quizdetail(110605002) |> render_table
 # row = eachrow(student_information)[1]
 for row in eachrow(student_information)
     msg0 = @htl("""
@@ -68,10 +69,7 @@ for row in eachrow(student_information)
                 <br>
                 以下是您本學期的成績一覽：
                 <p>
-                    <ul>
-                        <li>測驗A：$(row.Score_A)</li>
-                        <li>測驗B：$(row.Score_B)</li>
-                    </ul>
+                    $(render_table(quizdetail(row.StudentID)))
                 </p>
 
                 <p>
