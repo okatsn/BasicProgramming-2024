@@ -113,8 +113,8 @@ stages:
       size: 1048
     - path: data/innergroup_with_note.csv
       hash: md5
-      md5: 5364d3e254b532ea09c8e0a4bded35bd
-      size: 3297
+      md5: 9c719dc42c3aee7bc8d87476a0f47100
+      size: 3339
     - path: data/intergroup_score.csv
       hash: md5
       md5: af1581b749ebe4ea969ca2ed9add521c
