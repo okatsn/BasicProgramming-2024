@@ -16,20 +16,20 @@ summary_of_quiz = @chain df_quiz begin
     # select(:Name, )
 end
 
-final_sheet = @chain leftjoin(student_information, select(df_inner, Not(:who_did_not_score)); on=[:Name, :gmail]) begin
-    sort(:Number)
-    transform(:score_mean => ByRow(x -> x * BP.inner_score_weight); renamecols=false)
-    rename(:score_mean => :score_mean_inner)
 
-    leftjoin(select(df_inter, Not(:who_did_not_score)); on=:GroupID)
-    transform(:score_mean => ByRow(x -> x * BP.inter_score_weight); renamecols=false)
-    rename(:score_mean => :score_mean_inter)
+final_sheet = @chain student_information begin
+    leftjoin(df_inner; on=[:Name, :gmail], renamecols="" => "_inner") # The column names appended on the right is suffixed by "_inner". The "left" columns are suffixed by nothing.
+    transform(:score_mean_inner => ByRow(x -> x * BP.inner_score_weight); renamecols=false)
 
-    leftjoin(summary_of_quiz; on=:Name)
-    transform(:score_mean => ByRow(x -> x * BP.quiz_score_weight); renamecols=false)
-    rename(:score_mean => :score_mean_quiz)
+    leftjoin(df_inter; on=:GroupID, renamecols="" => "_inter")
+    transform(:score_mean_inter => ByRow(x -> x * BP.inter_score_weight); renamecols=false)
 
-    transform(AsTable([:score_mean_quiz, :score_mean_inner, :score_mean_inter]) => ByRow(sum) => :score_overall)
+    leftjoin(summary_of_quiz; on=:Name, renamecols="" => "_quiz")
+    transform(:score_mean_quiz => ByRow(x -> x * BP.quiz_score_weight); renamecols=false)
+
+    select(Not(r"who_did_not_score"))
+
+    transform(AsTable(r"score") => ByRow(sum) => :score_overall)
 
     transform(Cols(r"score\_") .=> ByRow(x -> round(x; digits=2)); renamecols=false)
     select(:Number, :Department, :StudentID, :Name, :Gender, :score_mean_quiz, :score_mean_inner, :score_mean_inter, :score_overall)
