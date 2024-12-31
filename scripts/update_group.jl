@@ -37,7 +37,7 @@ gmail_gid = Dict(student_information.gmail .=> student_information.GroupID)
 inner_score0 = readgsheet(secrets["score_innerGroup"])
 inner_score = @chain inner_score0 begin
     innerscoreprep!
-    transform!(:ReplierEmail => ByRow(x -> gmail_gid[x]) => :GroupID)
+    transform!(:ReplierEmail => ByRow(x -> gmail_gid[x]) => :ReplierGID)
     transform!(:ReplierEmail => ByRow(i -> gmail_notme[i]) => :NotMe)
 
     # Authentication
@@ -48,11 +48,11 @@ end
 inter_score0 = readgsheet(secrets["score_interGroup"])
 inter_score = @chain inter_score0 begin
     interscoreprep!
-    transform!(:ReplierEmail => ByRow(x -> gmail_gid[x]) => :GroupID)
+    transform!(:ReplierEmail => ByRow(x -> gmail_gid[x]) => :ReplierGID)
 
     # Authentication
     filter!(:ReplierEmail => in(student_information.gmail), _) # remove alien replier
-    filter!(AsTable(:) => (nt -> !isequal(nt.GroupID, nt.Group) && length(nt.Group) == 1), _) # replier's group (GroupID) cannot be the score's group; additional check of nt.Group's string length.
+    filter!(AsTable(:) => (nt -> !isequal(nt.ReplierGID, nt.Group) && length(nt.Group) == 1), _) # replier's group (ReplierGID) cannot be the score's group; additional check of nt.Group's string length.
 end
 
 
