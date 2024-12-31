@@ -59,15 +59,12 @@ stages:
       md5: 6404a6792b822675714bcda8516d06ac
       size: 2439
   update_quiz_score:
-    cmd: julia --project=@. scripts/update_quiz_score.jl Python_for_beginners_5-8
-    params:
-      params.yaml:
-        this_test: Python_for_beginners_5-8
+    cmd: julia --project=@. scripts/update_quiz_score.jl
     outs:
     - path: data/quiz_score.csv
       hash: md5
-      md5: 7469015b04aa9e444446938766ad580b
-      size: 3207
+      md5: 81b73bdfa9cb4f89e1591b98a11c8d14
+      size: 6642
   send_quiz_score:
     cmd: julia --project=@. scripts/send_quiz_score.jl Python_for_beginners_5-8
     deps:
