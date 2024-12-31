@@ -30,3 +30,60 @@ score_inner = CSV.read("data/innergroup_score.csv", DataFrame)
 innerscore(name) = Dict(score_inner.Name .=> score_inner.score_mean)[name]
 
 score_quiz = CSV.read("data/quiz_score.csv", DataFrame)
+quizscore(test, sid) = groupby(score_quiz, [:Test, :StudentID])[(Test=test, StudentID=sid)]
+quizdetail(sid) = groupby(score_quiz, [:StudentID])[(; StudentID=sid)]
+
+# quizscore("Python_for_beginners_13-16", 110605002)
+# quizdetail(110605002)
+# row = eachrow(student_information)[1]
+for row in eachrow(student_information)
+    msg0 = @htl("""
+    <html>
+        <head>
+            <style>
+            h1 {
+                font-size: 24px;
+                font-weight: bold;
+            }
+
+            h2 {
+                font-size: 18px;
+                font-weight: bold;
+            }
+
+            table {
+                border-collapse: collapse;
+                width: 100%;
+            }
+
+            table, th, td {
+                border: 1px solid black;
+            }
+            </style>
+        </head>
+
+        <body>
+            <p>
+                $(row.StudentID) $(row.Name)同學您好，
+                <br>
+                以下是您本學期的成績一覽：
+                <p>
+                    <ul>
+                        <li>測驗A：$(row.Score_A)</li>
+                        <li>測驗B：$(row.Score_B)</li>
+                    </ul>
+                </p>
+
+                <p>
+                $keynote1
+                <br>
+                $keynote2
+                </p>
+
+                <br>
+                若有任何疑問，請回信 $sender 或至科一館 S113 找助教。
+            </p>
+        </body>
+    </html>
+    """)
+end
