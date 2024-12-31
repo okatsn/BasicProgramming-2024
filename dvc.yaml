@@ -34,9 +34,6 @@ stages:
     cmd: julia --project=@. scripts/update_quiz_score.jl ${this_test}
     params:
       - this_test
-    outs:
-      - data/quiz_score.csv:
-          persist: true
   send_quiz_score:
     # dvc stage add -n send_quiz_score -p this_test -d data/quiz_score.csv julia --project=@. scripts/send_quiz_score.jl
     # KEYNOTE: issent.csv will be modified.
