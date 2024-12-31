@@ -1,5 +1,11 @@
 # README
 
+## Tips for using DVC workflow
+
+If a file (e.g., `group_score_fill.pdf`) is produced in a stage, then make it tracked as one of the `outs` in that stage instead of having a DVC file for it.
+
+If a stage runs a script, make the script one of the `deps`.
+
 ## Rule
 
 Go to info.typ

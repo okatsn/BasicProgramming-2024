@@ -17,6 +17,8 @@ stages:
       - data/QRCode
       - img/QRCode
       - test_reply_sheet.typ
+    outs:
+      - test_reply_sheet.pdf
   generate_qrcode_group_score:
     cmd: julia --project=@. scripts/generate_qrcode_group_score.jl
     deps:
@@ -31,6 +33,8 @@ stages:
     deps:
       - data/group_qrcode_links.csv
       - group_score_fill.typ
+    outs:
+      - group_score_fill.pdf
   update_quiz_score:
     cmd: julia --project=@. scripts/update_quiz_score.jl
     deps:

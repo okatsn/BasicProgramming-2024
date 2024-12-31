@@ -35,6 +35,11 @@ stages:
       hash: md5
       md5: 4bf60695d19e38d74a40d908b1711b95
       size: 1358
+    outs:
+    - path: test_reply_sheet.pdf
+      hash: md5
+      md5: cbe8d00d16be5ab11044b48b31747852
+      size: 1166260
   generate_qrcode_group_score:
     cmd: julia --project=@. scripts/generate_qrcode_group_score.jl
     deps:
@@ -67,6 +72,11 @@ stages:
       hash: md5
       md5: 6404a6792b822675714bcda8516d06ac
       size: 2439
+    outs:
+    - path: group_score_fill.pdf
+      hash: md5
+      md5: 0faae4f2287d7608a1b4181aed326b68
+      size: 2192323
   update_quiz_score:
     cmd: julia --project=@. scripts/update_quiz_score.jl
     deps:
