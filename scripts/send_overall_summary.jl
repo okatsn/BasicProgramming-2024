@@ -75,6 +75,7 @@ opt = SendOptions(
 
 # row = eachrow(student_information)[1]
 for row in eachrow(student_information)
+    subject = "基礎程式語言第二部分成績"
     msg0 = @htl("""
     <html>
         <head>
@@ -104,7 +105,7 @@ for row in eachrow(student_information)
             <p>
                 $(row.StudentID) $(row.Name)同學您好，
                 <br>
-                以下是您本學期的成績一覽：
+                以下是您本學期的上機測驗成績一覽：
                 <p>
                     $(render_table(selectquizdetail(row.StudentID)))
                 </p>
@@ -119,17 +120,17 @@ for row in eachrow(student_information)
                 <p>
                 這是您的組員對您的評分(原始平均)：
                     $(innerscore(row.Name))
-                評語：
+                來自組員的話：
                     $(render_list(innernote(row.Name)))
                 </p>
 
                 <p>
-                學期總分 (陳建志老師的部分滿分 50)：
+                基礎程式語言第二部分的總分(滿分50)：
                 $(finalscore(row.StudentID))
-
+                 (上機測驗 30%；課題報告組外評分 5%； 課題報告組內評分 10%； 課題報告計畫書 5%)
                 </p>
                 <br>
-                若有任何疑問，請回信 $sender 或至科一館 S113 找助教。
+                若有任何疑問，請在1/3日前回信 $sender 或至科一館 S113 找助教。
             </p>
         </body>
     </html>
