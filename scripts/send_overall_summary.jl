@@ -28,3 +28,5 @@ interscore(gid) = Dict(score_inter.GroupID .=> score_inter.score_mean)[gid]
 
 score_inner = CSV.read("data/innergroup_score.csv", DataFrame)
 innerscore(name) = Dict(score_inner.Name .=> score_inner.score_mean)[name]
+
+score_quiz = CSV.read("data/quiz_score.csv", DataFrame)
