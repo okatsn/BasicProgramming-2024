@@ -68,9 +68,9 @@ inner_score_stacked = @chain inner_score begin
     select(Not(r"Member"), [:Member_1, :Member_2, :Member_3,] => ByRow((x, y, z) -> (x, y, z)) => :Members)
     stack(Cols(r"^Score_"); variable_name=:score_tag, value_name=:score)
     transform(:score_tag => ByRow(x -> parse(Int, match(r"\d+", x).match)) => :MemberID)
-    transform([:Members, :MemberID] => ByRow((m, i) -> m[i]) => :name)
-    select(:Time, :name, :score, :ReplierEmail => :scored_by)
-    groupby([:name, :scored_by])
+    transform([:Members, :MemberID] => ByRow((m, i) -> m[i]) => :Name)
+    select(:Time, :Name, :score, :ReplierEmail => :scored_by)
+    groupby([:Name, :scored_by])
     takelast
 end
 
@@ -80,12 +80,12 @@ if nrow(inner_score_stacked) != 3 * nrow(inner_score)
 end
 
 inner_score_final = @chain inner_score_stacked begin
-    groupby(:name)
+    groupby(:Name)
     combine(:score => mean, :scored_by => Ref)
-    transform(:name => ByRow(x -> name_gmail[x]) => :gmail)
+    transform(:Name => ByRow(x -> name_gmail[x]) => :gmail)
     transform(:gmail => ByRow(x -> gmail_notme[x]) => :NotMe)
     transform([:NotMe, :scored_by_Ref] => ByRow((n, s) -> setdiff(n, Set(s))) => :who_did_not_score)
-    select(:name, :gmail, :score_mean, :who_did_not_score)
+    select(:Name, :gmail, :score_mean, :who_did_not_score)
 end
 
 CSV.write("data/innergroup_score.csv", inner_score_final)
