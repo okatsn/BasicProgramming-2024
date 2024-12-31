@@ -33,6 +33,7 @@ final_sheet = @chain leftjoin(student_information, select(df_inner, Not(:who_did
 
 
     select(:Number, :Department, :StudentID, :Name, :Gender, :score_mean_quiz, :score_mean_inner, :score_mean_inter, :score_overall)
+    sort(:Number)
     rename(:score_mean_inner => "組內評分")
     rename(:score_mean_inter => "組間互評")
     rename(:score_mean_quiz => "上機測驗")
