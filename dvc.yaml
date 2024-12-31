@@ -32,14 +32,6 @@ stages:
     cmd: julia --project=@. scripts/update_quiz_score.jl
     outs:
       - data/quiz_score.csv
-  send_quiz_score:
-    # KEYNOTE: issent.csv will be modified.
-    # CHECKPOINT: Set params.yaml, enable `do_send_email` and run `dvc repro`
-    cmd: julia --project=@. scripts/send_quiz_score.jl ${test_to_sent}
-    deps:
-      - data/quiz_score.csv
-    params:
-      - test_to_sent
   update_group_scores:
     cmd: julia --project=@. scripts/update_group.jl
     outs:
