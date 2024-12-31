@@ -4,6 +4,8 @@ stages:
   # Referring: https://dvc.org/doc/command-reference/stage/add
   julia_generate_csv_qrcode:
     cmd: julia --project=@. scripts/generate_qrcode.jl
+    deps:
+      - scripts/generate_qrcode.jl
     outs:
       - data/QRCode
       - img/QRCode
@@ -14,6 +16,9 @@ stages:
     deps:
       - data/QRCode
       - img/QRCode
+      - test_reply_sheet.typ
+    outs:
+      - test_reply_sheet.pdf
   generate_qrcode_group_score:
     cmd: julia --project=@. scripts/generate_qrcode_group_score.jl
     deps:
@@ -28,19 +33,31 @@ stages:
     deps:
       - data/group_qrcode_links.csv
       - group_score_fill.typ
+    outs:
+      - group_score_fill.pdf
   update_quiz_score:
     cmd: julia --project=@. scripts/update_quiz_score.jl
+    deps:
+      - scripts/update_quiz_score.jl
     outs:
       - data/quiz_score.csv
   update_group_scores:
     cmd: julia --project=@. scripts/update_group.jl
+    deps:
+      - scripts/update_group.jl
     outs:
       - data/innergroup_score.csv
+      - data/innergroup_with_note.csv
       - data/intergroup_score.csv
+      - data/intergroup_with_note.csv
     always_changed: true
-  send_group_score:
-    cmd: julia --project=@. scripts/send_group_score.jl
+  summary_scores:
+    cmd: julia --project=@. scripts/summarize_scores.jl
     deps:
-      - data/innergroup_score.csv
       - data/intergroup_score.csv
-    always_changed: true
+      - data/innergroup_score.csv
+      - data/quiz_score.csv
+      - data/plan_score_by_ccc.csv
+      - scripts/summarize_scores.jl
+    outs:
+      - data/final_score.csv

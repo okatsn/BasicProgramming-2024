@@ -37,7 +37,7 @@ gmail_gid = Dict(student_information.gmail .=> student_information.GroupID)
 inner_score0 = readgsheet(secrets["score_innerGroup"])
 inner_score = @chain inner_score0 begin
     innerscoreprep!
-    transform!(:ReplierEmail => ByRow(x -> gmail_gid[x]) => :GID)
+    transform!(:ReplierEmail => ByRow(x -> gmail_gid[x]) => :ReplierGID)
     transform!(:ReplierEmail => ByRow(i -> gmail_notme[i]) => :NotMe)
 
     # Authentication
@@ -48,12 +48,13 @@ end
 inter_score0 = readgsheet(secrets["score_interGroup"])
 inter_score = @chain inter_score0 begin
     interscoreprep!
-    transform!(:ReplierEmail => ByRow(x -> gmail_gid[x]) => :GID)
+    transform!(:ReplierEmail => ByRow(x -> gmail_gid[x]) => :ReplierGID)
 
     # Authentication
     filter!(:ReplierEmail => in(student_information.gmail), _) # remove alien replier
-    filter!(AsTable(:) => (nt -> !isequal(nt.GID, nt.Group) && length(nt.Group) == 1), _) # replier's group (GID) cannot be the score's group; additional check of nt.Group's string length.
+    filter!(AsTable(:) => (nt -> !isequal(nt.ReplierGID, nt.Group) && length(nt.Group) == 1), _) # replier's group (ReplierGID) cannot be the score's group; additional check of nt.Group's string length.
 end
+
 
 if nrow(inner_score) != nrow(inner_score0)
     @warn "Some reply do not pass authentication (Inner score)."
@@ -62,30 +63,32 @@ if nrow(inter_score) != nrow(inter_score0)
     @warn "Some reply do not pass authentication (Inter score)."
 end
 
+CSV.write("data/intergroup_with_note.csv", inter_score)
 
 # # Calculate
 inner_score_stacked = @chain inner_score begin
     select(Not(r"Member"), [:Member_1, :Member_2, :Member_3,] => ByRow((x, y, z) -> (x, y, z)) => :Members)
     stack(Cols(r"^Score_"); variable_name=:score_tag, value_name=:score)
     transform(:score_tag => ByRow(x -> parse(Int, match(r"\d+", x).match)) => :MemberID)
-    transform([:Members, :MemberID] => ByRow((m, i) -> m[i]) => :name)
-    select(:Time, :name, :score, :ReplierEmail => :scored_by)
-    groupby([:name, :scored_by])
+    transform([:Members, :MemberID] => ByRow((m, i) -> m[i]) => :Name)
+    select(:Time, :Name, :score, :Note, :ReplierEmail => :scored_by)
+    groupby([:Name, :scored_by])
     takelast
 end
 
+CSV.write("data/innergroup_with_note.csv", inner_score_stacked)
 
 if nrow(inner_score_stacked) != 3 * nrow(inner_score)
     @warn "Some replies of the same replier that has earlier time was discarded."
 end
 
 inner_score_final = @chain inner_score_stacked begin
-    groupby(:name)
+    groupby(:Name)
     combine(:score => mean, :scored_by => Ref)
-    transform(:name => ByRow(x -> name_gmail[x]) => :gmail)
+    transform(:Name => ByRow(x -> name_gmail[x]) => :gmail)
     transform(:gmail => ByRow(x -> gmail_notme[x]) => :NotMe)
     transform([:NotMe, :scored_by_Ref] => ByRow((n, s) -> setdiff(n, Set(s))) => :who_did_not_score)
-    select(:name, :gmail, :score_mean, :who_did_not_score)
+    select(:Name, :gmail, :score_mean, :who_did_not_score)
 end
 
 CSV.write("data/innergroup_score.csv", inner_score_final)
@@ -93,11 +96,11 @@ CSV.write("data/innergroup_score.csv", inner_score_final)
 inter_score_final = @chain inter_score begin
     groupby([:ReplierEmail, :Group])
     takelast
-    transform(:Group => :GID; renamecols=false)
-    groupby(:GID)
+    transform(:Group => :GroupID; renamecols=false)
+    groupby(:GroupID)
     combine(:Score => mean => :score_mean, :ReplierEmail => Ref, nrow)
-    transform([:GID, :ReplierEmail_Ref] => ByRow((i, r) -> setdiff(gid_notthisgroup[i], r)) => :who_did_not_score)
-    select(:GID, :score_mean, :who_did_not_score)
+    transform([:GroupID, :ReplierEmail_Ref] => ByRow((i, r) -> setdiff(gid_notthisgroup[i], r)) => :who_did_not_score)
+    select(:GroupID, :score_mean, :who_did_not_score)
 end
 
 CSV.write("data/intergroup_score.csv", inter_score_final)
