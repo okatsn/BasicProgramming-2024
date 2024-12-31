@@ -547,7 +547,7 @@ version = "1.14.1"
 
 [[deps.OkHypertextTools]]
 deps = ["HypertextLiteral"]
-git-tree-sha1 = "193ee785a2138f2dd212637b1e903a3532b12893"
+path = "/home/jovyan/.julia/dev/OkHypertextTools"
 uuid = "ae1ef8a7-b62b-4b98-a332-ad23a8f1746c"
 version = "0.1.0"
 
