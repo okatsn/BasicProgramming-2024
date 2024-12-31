@@ -1,0 +1,5 @@
+outs:
+- md5: 8a1ec50577e358b2768b25158362466a
+  size: 29
+  hash: md5
+  path: plan_score_by_ccc.csv
