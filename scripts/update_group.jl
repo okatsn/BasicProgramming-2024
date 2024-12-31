@@ -37,7 +37,7 @@ gmail_gid = Dict(student_information.gmail .=> student_information.GroupID)
 inner_score0 = readgsheet(secrets["score_innerGroup"])
 inner_score = @chain inner_score0 begin
     innerscoreprep!
-    transform!(:ReplierEmail => ByRow(x -> gmail_gid[x]) => :GID)
+    transform!(:ReplierEmail => ByRow(x -> gmail_gid[x]) => :GroupID)
     transform!(:ReplierEmail => ByRow(i -> gmail_notme[i]) => :NotMe)
 
     # Authentication
@@ -48,11 +48,11 @@ end
 inter_score0 = readgsheet(secrets["score_interGroup"])
 inter_score = @chain inter_score0 begin
     interscoreprep!
-    transform!(:ReplierEmail => ByRow(x -> gmail_gid[x]) => :GID)
+    transform!(:ReplierEmail => ByRow(x -> gmail_gid[x]) => :GroupID)
 
     # Authentication
     filter!(:ReplierEmail => in(student_information.gmail), _) # remove alien replier
-    filter!(AsTable(:) => (nt -> !isequal(nt.GID, nt.Group) && length(nt.Group) == 1), _) # replier's group (GID) cannot be the score's group; additional check of nt.Group's string length.
+    filter!(AsTable(:) => (nt -> !isequal(nt.GroupID, nt.Group) && length(nt.Group) == 1), _) # replier's group (GroupID) cannot be the score's group; additional check of nt.Group's string length.
 end
 
 if nrow(inner_score) != nrow(inner_score0)
@@ -93,11 +93,11 @@ CSV.write("data/innergroup_score.csv", inner_score_final)
 inter_score_final = @chain inter_score begin
     groupby([:ReplierEmail, :Group])
     takelast
-    transform(:Group => :GID; renamecols=false)
-    groupby(:GID)
+    transform(:Group => :GroupID; renamecols=false)
+    groupby(:GroupID)
     combine(:Score => mean => :score_mean, :ReplierEmail => Ref, nrow)
-    transform([:GID, :ReplierEmail_Ref] => ByRow((i, r) -> setdiff(gid_notthisgroup[i], r)) => :who_did_not_score)
-    select(:GID, :score_mean, :who_did_not_score)
+    transform([:GroupID, :ReplierEmail_Ref] => ByRow((i, r) -> setdiff(gid_notthisgroup[i], r)) => :who_did_not_score)
+    select(:GroupID, :score_mean, :who_did_not_score)
 end
 
 CSV.write("data/intergroup_score.csv", inter_score_final)
