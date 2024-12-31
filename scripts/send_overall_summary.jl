@@ -62,7 +62,7 @@ finalscore(sid) = Dict(score_final.var"學號" .=> score_final.var"總分")[sid]
 secrets = JSON.parsefile("local/secrets.json")
 sender_key = secrets["sender_key"]
 sender = secrets["sender"]
-
+contact = Dict(student_information.StudentID .=> student_information.gmail)
 url = "smtps://smtp.gmail.com:465"
 from = "<$sender>"
 
