@@ -18,6 +18,8 @@ summary_of_quiz = @chain df_quiz begin
 end
 
 
+scorecols = Cols(r"score\_")
+
 final_sheet = @chain student_information begin
     leftjoin(df_inner; on=[:Name, :gmail], renamecols="" => "_inner") # The column names appended on the right is suffixed by "_inner". The "left" columns are suffixed by nothing.
     transform(:score_mean_inner => ByRow(x -> x * BP.inner_score_weight); renamecols=false)
@@ -34,10 +36,10 @@ final_sheet = @chain student_information begin
 
     select(Not(r"who_did_not_score"))
 
-    transform(AsTable(r"score") => ByRow(sum) => :score_overall)
+    transform(AsTable(scorecols) => ByRow(sum) => :score_overall)
 
-    transform(Cols(r"score\_") .=> ByRow(x -> round(x; digits=2)); renamecols=false)
-    select(:Number, :Department, :StudentID, :Name, :Gender, :score_mean_quiz, :score_mean_inner, :score_mean_inter, :score_overall)
+    transform(scorecols .=> ByRow(x -> round(x; digits=2)); renamecols=false)
+    select(:Number, :Department, :StudentID, :Name, :Gender, scorecols)
     sort(:Number)
     rename(:score_plan => "計畫書")
     rename(:score_mean_inner => "組內評分")
@@ -50,7 +52,6 @@ final_sheet = @chain student_information begin
     rename(:Department => "系所別")
     rename(:StudentID => "學號")
 
-    sort(:Number)
 
 end
 
