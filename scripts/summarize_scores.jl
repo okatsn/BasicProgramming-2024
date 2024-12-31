@@ -37,10 +37,11 @@ final_sheet = @chain leftjoin(student_information, select(df_inner, Not(:who_did
     rename(:score_mean_inter => "組間互評")
     rename(:score_mean_quiz => "上機測驗")
     rename(:score_overall => "總分")
-    rename(:Number => "學號")
+    rename(:Number => "編號")
     rename(:Name => "姓名")
     rename(:Gender => "性別")
     rename(:Department => "系所別")
+    rename(:StudentID => "學號")
 end
 
 CSV.write("data/score_ccc.csv", final_sheet)

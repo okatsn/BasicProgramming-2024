@@ -2,30 +2,39 @@ schema: '2.0'
 stages:
   julia_generate_csv_qrcode:
     cmd: julia --project=@. scripts/generate_qrcode.jl
+    deps:
+    - path: scripts/generate_qrcode.jl
+      hash: md5
+      md5: 93a1a1a7ae921c5bf3932a463faefc2d
+      size: 2095
     outs:
     - path: data/QRCode
       hash: md5
-      md5: 687f03180e2d867a87767729893724d4.dir
-      size: 6866
+      md5: bb36682b002e2aa6b1dab84c392eb680.dir
+      size: 6867
       nfiles: 4
     - path: img/QRCode
       hash: md5
-      md5: f95f78b0d1b7e38cc9a16b3298a85afa.dir
-      size: 150695
+      md5: 7b6061baa68a4745477e2ed073b571f8.dir
+      size: 150528
       nfiles: 64
   typst_compile:
     cmd: typst compile test_reply_sheet.typ
     deps:
     - path: data/QRCode
       hash: md5
-      md5: 687f03180e2d867a87767729893724d4.dir
-      size: 6866
+      md5: bb36682b002e2aa6b1dab84c392eb680.dir
+      size: 6867
       nfiles: 4
     - path: img/QRCode
       hash: md5
-      md5: f95f78b0d1b7e38cc9a16b3298a85afa.dir
-      size: 150695
+      md5: 7b6061baa68a4745477e2ed073b571f8.dir
+      size: 150528
       nfiles: 64
+    - path: test_reply_sheet.typ
+      hash: md5
+      md5: 4bf60695d19e38d74a40d908b1711b95
+      size: 1358
   generate_qrcode_group_score:
     cmd: julia --project=@. scripts/generate_qrcode_group_score.jl
     deps:
@@ -60,6 +69,11 @@ stages:
       size: 2439
   update_quiz_score:
     cmd: julia --project=@. scripts/update_quiz_score.jl
+    deps:
+    - path: scripts/update_quiz_score.jl
+      hash: md5
+      md5: d4e31de7b8d1ed33941cf1b84ce73828
+      size: 1674
     outs:
     - path: data/quiz_score.csv
       hash: md5
@@ -77,6 +91,11 @@ stages:
         this_test: Python_for_beginners_5-8
   update_group_scores:
     cmd: julia --project=@. scripts/update_group.jl
+    deps:
+    - path: scripts/update_group.jl
+      hash: md5
+      md5: 945bc95fa7ea402d3f36c91d71602702
+      size: 4238
     outs:
     - path: data/innergroup_score.csv
       hash: md5
@@ -120,8 +139,12 @@ stages:
       hash: md5
       md5: 81b73bdfa9cb4f89e1591b98a11c8d14
       size: 6642
+    - path: scripts/summarize_scores.jl
+      hash: md5
+      md5: 4a3e0c1e6ae3f0ff271df92bcabb0176
+      size: 1909
     outs:
     - path: data/score_ccc.csv
       hash: md5
-      md5: 55b6f68f16f9927b83c6acf99cc7de34
-      size: 1792
+      md5: 3111e6f293972641a2a06ad383d82c99
+      size: 1789
