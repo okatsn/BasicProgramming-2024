@@ -55,6 +55,7 @@ inter_score = @chain inter_score0 begin
     filter!(AsTable(:) => (nt -> !isequal(nt.GroupID, nt.Group) && length(nt.Group) == 1), _) # replier's group (GroupID) cannot be the score's group; additional check of nt.Group's string length.
 end
 
+
 if nrow(inner_score) != nrow(inner_score0)
     @warn "Some reply do not pass authentication (Inner score)."
 end
@@ -62,6 +63,7 @@ if nrow(inter_score) != nrow(inter_score0)
     @warn "Some reply do not pass authentication (Inter score)."
 end
 
+CSV.write("data/intergroup_with_note.csv", inter_score)
 
 # # Calculate
 inner_score_stacked = @chain inner_score begin
@@ -69,11 +71,12 @@ inner_score_stacked = @chain inner_score begin
     stack(Cols(r"^Score_"); variable_name=:score_tag, value_name=:score)
     transform(:score_tag => ByRow(x -> parse(Int, match(r"\d+", x).match)) => :MemberID)
     transform([:Members, :MemberID] => ByRow((m, i) -> m[i]) => :Name)
-    select(:Time, :Name, :score, :ReplierEmail => :scored_by)
+    select(:Time, :Name, :score, :Note, :ReplierEmail => :scored_by)
     groupby([:Name, :scored_by])
     takelast
 end
 
+CSV.write("data/innergroup_with_note.csv", inner_score_stacked)
 
 if nrow(inner_score_stacked) != 3 * nrow(inner_score)
     @warn "Some replies of the same replier that has earlier time was discarded."
