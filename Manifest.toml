@@ -547,9 +547,9 @@ version = "1.14.1"
 
 [[deps.OkHypertextTools]]
 deps = ["HypertextLiteral"]
-path = "/home/jovyan/.julia/dev/OkHypertextTools"
+git-tree-sha1 = "eadf30e062742e3cc72e196ccd199a46c21d763c"
 uuid = "ae1ef8a7-b62b-4b98-a332-ad23a8f1746c"
-version = "0.1.0"
+version = "0.1.1"
 
 [[deps.OkReadGSheet]]
 deps = ["CSV", "DataFrames", "GoogleDrive", "JSON", "Suppressor"]
