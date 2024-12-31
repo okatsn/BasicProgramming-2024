@@ -54,4 +54,8 @@ const gformheaders_intergroupscore = (
     "報告與內容綜合表現" => :Score,
     "附註" => :Note,
 )
+
+const inner_score_weight = 1.0 # Max 10 * 1.0
+const inter_score_weight = 0.5 # Max 10 * 0.5
+const quiz_score_weight = 0.3 # Max 100 * 0.3
 end
