@@ -43,6 +43,9 @@ selectquizdetail(sid) = select(
     :Score_B => "分數二"
 )
 
+df_plan = CSV.read("data/plan_score_by_ccc.csv", DataFrame)
+planscore(gid) = Dict(df_plan.GroupID .=> df_plan.Score)[gid]
+
 score_final = CSV.read("data/final_score.csv", DataFrame)
 finalscore(sid) = Dict(score_final.var"學號" .=> score_final.var"總分")[sid]
 # quizscore("Python_for_beginners_13-16", 110605002)
@@ -111,15 +114,21 @@ for row in eachrow(student_information)
                 </p>
 
                 <p>
-                這是您的組別報告的得分：
-                    $(interscore(row.GroupID))
-                評語：
+                這是您的組別的得分：
+                <ul>
+                <li>組間互評(滿分10分):$(interscore(row.GroupID))</li>
+                <li>計劃書分數(滿分5分):$(planscore(row.GroupID))</li>
+                </ul>
+
+                <br>
+                來自其他組別的評語：
                     $(render_list(internote(row.GroupID)))
                 </p>
 
                 <p>
-                這是您的組員對您的評分(原始平均)：
+                這是您的組員對您的評分(滿分10分)：
                     $(innerscore(row.Name))
+                <br>
                 來自組員的話：
                     $(render_list(innernote(row.Name)))
                 </p>

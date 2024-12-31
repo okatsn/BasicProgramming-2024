@@ -61,4 +61,5 @@ const gformheaders_intergroupscore = (
 const inner_score_weight = 1.0 # Max 10 * 1.0
 const inter_score_weight = 0.5 # Max 10 * 0.5
 const quiz_score_weight = 0.3 # Max 100 * 0.3
+const plan_score_weight = 1.0 # Max 5 * 1.0
 end
