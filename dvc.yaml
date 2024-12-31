@@ -31,9 +31,11 @@ stages:
   update_quiz_score:
     # https://dvc.org/doc/user-guide/project-structure/dvcyaml-files#templating
     # dvc stage add -n update_quiz_score -p this_test -o data/quiz_score.csv julia --project=@. scripts/update_quiz_score.jl
-    cmd: julia --project=@. scripts/update_quiz_score.jl ${this_test}
+    cmd: julia --project=@. scripts/update_quiz_score.jl
     params:
       - this_test
+    outs:
+      - data/quiz_score.csv
   send_quiz_score:
     # dvc stage add -n send_quiz_score -p this_test -d data/quiz_score.csv julia --project=@. scripts/send_quiz_score.jl
     # KEYNOTE: issent.csv will be modified.
