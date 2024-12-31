@@ -31,7 +31,7 @@ final_sheet = @chain leftjoin(student_information, select(df_inner, Not(:who_did
 
     transform(AsTable([:score_mean_quiz, :score_mean_inner, :score_mean_inter]) => ByRow(sum) => :score_overall)
 
-
+    transform(Cols(r"score\_") .=> ByRow(x -> round(x; digits=2)); renamecols=false)
     select(:Number, :Department, :StudentID, :Name, :Gender, :score_mean_quiz, :score_mean_inner, :score_mean_inter, :score_overall)
     sort(:Number)
     rename(:score_mean_inner => "組內評分")

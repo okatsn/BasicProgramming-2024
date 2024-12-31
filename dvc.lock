@@ -151,10 +151,10 @@ stages:
       size: 6642
     - path: scripts/summarize_scores.jl
       hash: md5
-      md5: 486d007b7a69e764a1538b3664826e8a
-      size: 1927
+      md5: c1d20ada0f4737d2e225006583f54323
+      size: 2011
     outs:
     - path: data/score_ccc.csv
       hash: md5
-      md5: 3f906567b03f64c34953e497dd77cb21
-      size: 1789
+      md5: 002d6a80215622c28dedab6636213096
+      size: 1330
